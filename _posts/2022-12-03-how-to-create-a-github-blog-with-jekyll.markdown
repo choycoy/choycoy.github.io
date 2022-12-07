@@ -23,34 +23,34 @@ tags:
 First, create a folder on my desktop to clone my repository I just made.
 e.g. choycoy.github.io on my desktop
 ![https](https://user-images.githubusercontent.com/119985540/206070954-7db9cf5e-2782-4c4d-8ad8-60b0fb9144e9.PNG)
-:can check the https of my repository and copy it.
-<br>
-<br>
+:can check the URL of my repository and copy it.
+
+### 4. Clone the repository
 Then open Git bash and enter 
 ```
 git clone https://github.com/choycoy/choycoy.github.io.git 
 ```
 on the path of folder just created.
 
-### 4. Create 'index' file on cmd
+### 5. Create 'index' file on cmd
 ```
 $ echo "Hello, World!" > index.html
 ```
 
-### 5. Push 'index' file to the remote repository
+### 6. Push 'index' file to the remote repository
 ```
 git add *
 git commit -m "Start git blog"
 git push -u origin main
 ```
-### 6. Check the blog link
+### 7. Check the blog link
 ![link](https://user-images.githubusercontent.com/40441643/205815518-e4bd54da-b8ac-4df1-b6a5-979a6a5d3a59.PNG)
 :can check the link of my blog on pages in Settings.
 <br>
 <br>
 Then I can see the blog which is written “Hello, World!” when I visit it.
 
-### 7. Apply Jekyll theme to make my blog look cool
+### 8. Apply Jekyll theme to make my blog look cool
 - Note that the local server was used to continue customising the site on my own without increasing the number of commit unnecessarily, which is not a good habit when we use github.
 <br>
 - Using Jekyll with bundler, the blog with the default skin was `minima` was created. See the attachment: [https://jekyllrb.com/tutorials/using-jekyll-with-bundler/](https://jekyllrb.com/tutorials/using-jekyll-with-bundler/)
@@ -70,7 +70,7 @@ Then unzip the source folder to the folder where my repository was stored and re
 - `screenshot-layouts.png`
 - `screenshot.png`
 
-### 8. Edit the `Gemfile`
+### 9. Edit the `Gemfile`
 From
 ```
 1. source "https://rubygems.org"
@@ -82,11 +82,11 @@ to
 2. gem "jekyll", "~> 4.3.1"
 3. gem "minimal-mistakes-jekyll"
 ```
-### 9. Change `_congig' file to customise the blog
+### 10. Change `_congig' file to customise the blog
 ![skin](https://user-images.githubusercontent.com/40441643/206083427-e10ecadc-b5c8-4938-a929-f0cc77be23e6.PNG)
 e.g. uncommenting the remote_theme
 
-### 10. Push every files to the remote repository
+### 11. Push every files to the remote repository
 In the path of the remote repository folder on Git Bash,
 ```
 git add *
@@ -96,5 +96,4 @@ git push -u origin main
 Then, I have got the awesome blog as seen below.
 <br>
 ![final](https://user-images.githubusercontent.com/40441643/205818355-3213c27f-dbdc-4d54-85e8-062422a3351c.PNG)
-
 
