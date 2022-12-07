@@ -8,7 +8,7 @@ tags:
   - bundler
 ---
 
-💡 This posts introduces how to create github pages, host it on web and apply Jeykll theme to the website. 
+💡 This post introduces how to create github pages, host it on web and apply Jeykll theme to the website. 
 {: .notice--warning}
 
 ### 1. Sign in Github: [https://github.com](https://github.com)
