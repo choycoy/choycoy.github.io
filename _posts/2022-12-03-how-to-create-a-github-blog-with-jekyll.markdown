@@ -26,6 +26,11 @@ e.g. choycoy.github.io on my desktop
 :can check the URL of my repository and copy it.
 
 ### 4. Clone the repository
+<<<<<<< HEAD
+<br>
+<br>
+=======
+>>>>>>> 0533a13dd0a6a8cf5e3f088112b2a43a75e0283a
 Then open Git bash and enter 
 ```
 git clone https://github.com/choycoy/choycoy.github.io.git 
