@@ -23,7 +23,9 @@ tags:
 First, create a folder on my desktop to clone my repository I just made.
 e.g. choycoy.github.io on my desktop
 ![https](https://user-images.githubusercontent.com/119985540/206070954-7db9cf5e-2782-4c4d-8ad8-60b0fb9144e9.PNG)
-:can check the https of my repository and copy it.
+:can check the URL of my repository and copy it.
+
+### 4. Clone the repository
 <br>
 <br>
 Then open Git bash and enter 
