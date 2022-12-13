@@ -107,6 +107,8 @@ Machine learning defines `TP`, `FP`, `FN` and `TN` for each of the following fou
 Using this concept, it becomes `Precision` and `Recall`.
 ## 1) Precision
 `Precision` is the ratio of what **the model classifies as true to what is actually true**.
+<br>
+<br>
 ![precision](https://user-images.githubusercontent.com/40441643/207259844-bc92d415-4eff-438a-b3a2-0505f495f761.PNG)
 ## 2) Recall
 `Recall` is the ratio of what **the model predicts to be true out of what is actually true**.
