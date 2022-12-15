@@ -26,7 +26,6 @@ def prediction(image as input):
     How can I code?
     return result
 ```
-<br>
 Photographs vary so much depending on the viewing angle, lighting, and target deformation (cat's pose) that it's not easy to pick out a clear common feature from a photograph. In fact, as a conclusion, the program does not have a clear algorithm such as the sorting numbers in the first place.
 <br>
 <br>
