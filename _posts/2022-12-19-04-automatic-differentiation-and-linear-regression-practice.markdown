@@ -159,4 +159,4 @@ print(model.predict([9.5]))
 ```
 [[98.556465]]
 ```
-If the student studies 9 hours and 30 minutes, they will get abour 98.5.
+If the student studies 9 hours and 30 minutes, they will get about 98.5.
