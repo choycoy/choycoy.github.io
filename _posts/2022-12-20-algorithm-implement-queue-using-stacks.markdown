@@ -6,7 +6,7 @@ tags:
   - Stack
   - Amortised Analysis
 ---
-💡 This post introduces how to solve the leetcode problem Q. 232 Implement Queue using Stacks.
+💡 This post introduces how to solve the leetcode problem Q. 232: Implement Queue using Stacks.
 {: .notice--warning}
 Implement a first in first out `(FIFO) queue` using only `two stacks`. The implemented queue should support all the `functions` of a normal `queue` (`push`, `peek`, `pop`, and `empty`).
 ### Implement the Myqueue class
