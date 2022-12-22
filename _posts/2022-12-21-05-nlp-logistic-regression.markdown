@@ -7,7 +7,7 @@ tags:
   - Sigmoid Function
   - Cross Entropy
 ---
-💡 This post introduces the Binary Classification, Sigmoid Function
+💡 This post introduces the Binary Classification, Sigmoid Function and Cross Entropy Function, which are used in Logistic Regression.
 {: .notice--warning}
 
 Among the many problems we want to solve in our daily life, there are many problems where you have to chooses the correct answer from `two answers`. For example, you may take a test and wonder whether the test score is `pass` or `fail`, when you receive a certain mail, it is the problem of `classifying` it as `normal mail` or `spam mail`. **The problem of deciding between the two** is called `binary classification`. And a representative algorithm for solving this problem is **Logic Regression**.
