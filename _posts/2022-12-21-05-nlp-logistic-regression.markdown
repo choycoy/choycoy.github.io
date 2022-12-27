@@ -146,7 +146,7 @@ When the `actual value y` is `1`, `-log(H(x))` is used and when the `actual valu
 <br>
 <br>
 The graph when the `actual value y` is `1` is represented by a blue line, and the graph when the `actual value y` is `0` is represented by a red line. To briefly explain the graph above, when the `actual value y` is `1` and the `value of H(x)`, the `predicted value`, is `1`, the `error` is `0`, so of course, the `cost` is `0`.
-On the other hand, when the `actual value y` is `1` and converges to `0`, the `cost`**diverges to infinity**. If the `actual value` is `0`, you can understand it in reverse. This can be expressed in one expression as:
+On the other hand, when the `actual value y` is `1` and H(x) converges to `0`, the `cost`**diverges to infinity**. If the `actual value` is `0`, you can understand it in reverse. This can be expressed in one expression as:
 <br>
 <br>
 ![cost3](https://user-images.githubusercontent.com/40441643/209081503-34939c2c-2032-46f3-886c-c80aea695565.PNG)
