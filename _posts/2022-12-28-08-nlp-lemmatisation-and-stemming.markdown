@@ -9,7 +9,7 @@ tags:
 💡 This post introduces Stemming and Lemmatisation.
 {: .notice--warning}
 
-Among the normalisation techniques, we learn about the concepts of `Lemmatisation` and `Stemming`, which are techniques that can **reduce the number of words** in the corpus. Also, understand how the results differ between the two.
+Among the `normalisation` techniques, we learn about the concepts of `Lemmatisation` and `Stemming`, which are techniques that can **reduce the number of words** in the corpus. Also, understand how the results differ between the two.
 <br>
 <br>
 The meaning of these two tasks is that although they are different words when viewed with the naked eye, if they can be generalised to one word, they will be `generalised to one word` to **reduce the number of words** in the document. These methods are mainly used in NLP problems that use `Bag of Words(BoW)` expressions, which is to solve problem based on **word frequencies**. The goal of `preprocessing`, or more precisely, `normalisation` in NLP is always to **reduce complexity** from the corpus you have.
@@ -149,16 +149,16 @@ After Porter Stemmer: ['polici', 'do', 'organ', 'have', 'go', 'love', 'live', 'f
 After Lancaster Stemmer: ['policy', 'doing', 'org', 'hav', 'going', 'lov', 'liv', 'fly', 'die', 'watch', 'has', 'start']
 ```
 
-For the same word sequence, the two stemmers show completly different results. This is because the two stemmer algorithms use different algorithms. Therefore, when using an already known algorithm, apply the stemmer to the corpus you want to use and determine which stemmer is suitable for the corpus before using it.
+For the same word sequence, the two stemmers show completely different results. This is because the two stemmer algorithms use different algorithms. Therefore, when using an already known algorithm, apply the stemmer to the corpus you want to use and determine which stemmer is suitable for the corpus before using it.
 <br>
 <br>
-Algorithms based on these rules can often fail to generalsie properly. This is a case where the generalisation become excessive or less after stemming. For example, let's look at the result of stemming `organization` form `Porter's Algorithm`.
+Algorithms based on these rules can often fail to generalise properly. This is a case where the generalisation become excessive or less after stemming. For example, let's look at the result of stemming `organization` form `Porter's Algorithm`.
 <br>
 <br>
-organization -> orgarnization
+organization -> organ
 <br>
 <br>
-Even though `oraganization` and `organ` are completely different words, when I did stem extraction for `organization`, the word `organ` cam eoutt. Even if you stem from `organ`, the result will also be `organ`, so if you stem from two words, they wil have the same stem. This defeats the purpose of `normalisation`, which wants to get words that are same only if they have the **same meaning**. Finally, let's look at a simple example of the difference in the results when `headword extraction` and `stem extraction` are performed on the same word respectively.
+Even though `oraganization` and `organ` are completely different words, when I did stem extraction for `organization`, the word `organ` came out. Even if you stem from `organ`, the result will also be `organ`, so if you stem from two words, they will have the same stem. This defeats the purpose of `normalisation`, which wants to get words that are same only if they have the **same meaning**. Finally, let's look at a simple example of the difference in the results when `headword extraction` and `stem extraction` are performed on the same word respectively.
 <br>
 <br>
 **Stemming**
