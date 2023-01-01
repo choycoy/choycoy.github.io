@@ -307,7 +307,7 @@ r.search("1")
 ### 3. Regular Expression Module Function example
 
 ## (1) Difference between re.match() and re.search()
-If `search()` checks **whether a string matches the entire regular expression**, `match()` check whether the string matches the regular expression from the **beginning*. Even if there is a pattern to find in the middle of the string, the `match function` won't match the pattern at the start of the string.
+If `search()` checks **whether a string matches the entire regular expression**, `match()` check whether the string matches the regular expression from the **beginning**. Even if there is a pattern to find in the middle of the string, the `match function` won't match the pattern at the start of the string.
 ```
 r = re.compile("ab.")
 r.match("kkkabc") # no output
