@@ -146,7 +146,9 @@ Two vectors or matrixes of the `same size` can be added and subtracted. In this 
 ![vector](https://user-images.githubusercontent.com/40441643/210193304-422a5062-aa19-450d-83af-6ee83c6b2901.PNG)
 <br>
 <br>
-At this time, the addition and subtraction of two vectors `A` and `B` are as follows.
+At this time, the `addition` and `subtraction` of two vectors `A` and `B` are as follows.
+<br>
+<br>
 ![vecop](https://user-images.githubusercontent.com/40441643/210193336-97e6b709-3e10-4606-97e6-ea8451d269e9.PNG)
 <br>
 <br>
@@ -238,21 +240,17 @@ the dot product of two matrices:
 Multiplication of `vectors and matrices` or `matrices and vectors` works on the same principle as `matrix multiplication`.
 
 ## 4. Understanding with Multiple Linear Regression Matrix Operations
-What if the problem of predicting one dependent variable when there are two or more independent variables is expressed as a `matrix operation`? `Multiple Linear Regression` or `Multiple Logistic Regression` are example of such operations, here we use multiple linear regression as an example. Here is multiple linear regression expression with the number n of dependent variable x.
+What if the problem of predicting one dependent variable when there are two or more independent variables is expressed as a `matrix operation`? `Multiple Linear Regression` or `Multiple Logistic Regression` are example of such operations, here we use multiple linear regression as an example. Here is **multiple linear regression expression** with the number `n` of dependent variable `x.`
 <br>
 <br>
 ![mlre](https://user-images.githubusercontent.com/40441643/210195585-917794f5-1026-4fa5-96ff-b6e00112ae6f.PNG)
 <br>
 <br>
-This can be represented as the dot product of input vector[x1,...,xn] and weight vector[w1,...,wn] and.
-<br>
-<br>
+This can be represented as the dot product of input vector[x1,...,xn] and weight vector[w1,...,wn]
 ![expression1](https://user-images.githubusercontent.com/40441643/210195617-bab9edc5-b09f-40a1-ad74-9c6dae7f3e63.PNG)
 <br>
 <br>
 or can be represented as the dot product of weight vector[w1,...,wn] and input vector[x1,...,xn] .
-<br>
-<br>
 ![expression2](https://user-images.githubusercontent.com/40441643/210195697-b245ab32-7969-4998-9f95-a29ca8324c0d.PNG)
 <br>
 <br>
@@ -264,24 +262,20 @@ If the number of `samples` is large, it can be expressed by `matrix multiplicati
 <br>
 For the above data, it can be expressed as a **product** of input matrix `X` and the weight vector `W`.
 <br>
-<br>
 ![expression3](https://user-images.githubusercontent.com/40441643/210195950-b3d4057b-356b-4488-860c-68abee459b23.PNG)
 <br>
 <br>
 By adding the bias vector `B` to above expression, the entire hypothesis formula `H(X)` for the above data can be expressed.
-<br>
 <br>
 ![hypo](https://user-images.githubusercontent.com/40441643/210196021-406225f7-984d-470c-9c7c-08df549f67a2.PNG)
 <br>
 <br>
 In the above formula, the input matrix `X` has the size of 5 rows and 4 columns. Let the output vector be Y has the size of 5 rows and 1 column for **multiplication to be valid**. If the matrix operation is performed with the weight vector in front and the input vector matrix in the back, it is as follows.
 <br>
-<br>
 ![expression4](https://user-images.githubusercontent.com/40441643/210196291-1caee34b-19db-4d9c-9723-8c39737b75c3.PNG)
 <br>
 <br>
 As a mathematical convention, the weight `W` usually comes before the input `X` when expressed as the following formula.
-<br>
 <br>
 ![expression5](https://user-images.githubusercontent.com/40441643/210196349-6adc703a-8ce6-45f2-ab9a-fd37895797ac.PNG)
 <br>
@@ -303,23 +297,19 @@ Let's remember the two main conditions for `matrix multiplication` mentioned ear
 <br>
 ![ex1](https://user-images.githubusercontent.com/40441643/210197638-b76647c9-88e5-475e-8757-21c20ebf9e2f.PNG)
 <br>
-<br>
 Now let's infer the size of matrix `W` and matrix `B` from the size of the input matrix and the size of the output matrix.
 <br>
 <br>
 ![ex2](https://user-images.githubusercontent.com/40441643/210197705-6a3f5dcb-1eff-4c73-b2b6-66ac9f03df25.PNG)
-<br>
 <br>
 Matrix `B`, equivalent to matrix addition, does **not affect the size of matrix Y**. So the size of `B` matrix is the **same** as the size of the `Y` matrix.
 <br>
 <br>
 ![ex3](https://user-images.githubusercontent.com/40441643/210197779-8128724a-005b-4215-847a-4781ecf9535b.PNG)
 <br>
-<br>
 From `matrix multiplication` to be true, the **size of the columns** of the preceding matrix and the **size of the rows** of the following matrix must be the `same` in `matrix multiplication`. Therefore, the **size of the rows** of matrix `W` is determined from the input matrix `X`.
 <br>
 <br>
 ![ex4](https://user-images.githubusercontent.com/40441643/210197893-af9974be-9d27-4436-a001-c2a46cd31896.PNG)
-<br>
 <br>
 The **size of column** of the matrix resulting from the multiplication of two matrices is the **same** as the **size of the column** of the matrix following the matrix multiplication. Therefore, the `size of the columns` of matrix `W` is determined from the `output matrix Y`. If the size of the weight matrix and bias matrix can be estimated from the **sizes of the input and output matrices**, it is easy to calculate the **total number of parameters present** in the model when implementing a deep learning model. This is because the **total number of parameters of any deep learning model** is the **number of all elements of weight matrix and bias matrix present** in that model.
