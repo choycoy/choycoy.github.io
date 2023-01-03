@@ -5,7 +5,7 @@ tags:
   - Integer Encoding
   - OOV problem
   - Python's dictionary
-  - Python's Counter
+  - Python's Counter()
   - NLTK's FreqDist
   - enumerate()
   - text preprocessing in Keras
@@ -446,4 +446,4 @@ print(tokenizer.texts_to_sequences(preprocessed_sentences))
 [[2, 6], [2, 1, 6], [2, 4, 6], [1, 3], [3, 5, 4, 3], [4, 3], [2, 5, 1], [2, 5, 1], [2, 5, 3], [1, 1, 4, 3, 1, 2, 1], [2, 1, 4, 1]]
 ```
 
-The `top 5 frequency words` had indices from 2 to 6, and words such as `good` that were **not in the other word sets** were all encoded with `OOV` index `1`.
+The `top 5 frequency words` had indices from `2 to 6`, and words such as `good` that were **not in the other word sets** were all encoded with `OOV` index `1`.
