@@ -1,9 +1,3 @@
 main:
-  - title: "About me"
-    url: /about/
-  - title: "Posts"
-    url: /years/
-  - title: "Pages"
-    url: /pages/
   - title: "Tags"
     url: /tags/
