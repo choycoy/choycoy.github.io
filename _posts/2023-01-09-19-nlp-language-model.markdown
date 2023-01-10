@@ -29,7 +29,7 @@ Another type of language model is one that predicts an `empty middle word` given
 **Language Modelling**, which adds `-ing` to a language model, refers to the task of predicting unknown words from given words. In other words, language modelling is when a language model predicts the next word from previous words.
 <br>
 <br>
-Standford University, famous for nlp, like its language model to a grammar, This is because the job of a language model is to tell us **how appropriate a combination of words or sentences are**, just like `grammar` does.
+Stanford University, famous for nlp, like its language model to a grammar, This is because the job of a language model is to tell us **how appropriate a combination of words or sentences are**, just like `grammar` does.
 
 ### 2. Probability Assignment of Word Sequences
 Why is it necessary to assign probabilities to word sequences in nlp? Let's take an example. The capital `P` stands for `Probability`.
