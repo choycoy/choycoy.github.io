@@ -8,7 +8,7 @@ tags:
   - Conditional Probability
   - Count-based approach
 ---
-💡 This post introduces Statistical Language Model(LSM), Conditional Probability, Count-based approach and Sparsity Problem as Count-based approach's limitation.
+💡 This post introduces Statistical Language Model(SLM), Conditional Probability, Count-based approach and Sparsity Problem as Count-based approach's limitation.
 {: .notice--warning}
 
 # 03-02 Statistical Language Model(SLM)
