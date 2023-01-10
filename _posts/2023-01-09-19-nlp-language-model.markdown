@@ -92,4 +92,4 @@ So, if we give the above sentence to a machine and ask it to predict the word th
 ![google](https://user-images.githubusercontent.com/40441643/211278117-fd1eded5-d96a-4223-9c60-e5b5e8bb24b0.PNG)
 <br>
 <br>
-A **search engine** uses a `language model` that predicts the next word for a sequene of words entered.
+A **search engine** uses a `language model` that predicts the next word for a sequence of words entered.
