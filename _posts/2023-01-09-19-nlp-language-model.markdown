@@ -5,10 +5,10 @@ tags:
   - Language Model
   - Statistical Language Model(LSM)
 ---
-💡 This post introduces
+💡 This post introduces language model, probability assignment of word sequences and statistical language models.
 {: .notice--warning}
 
-A `Language Model` is a model that **assigns probabilities to word sequences(sentences)**. When there are certain sentences, the machine says this sentence is appropriate!, This sentence makes no sense! If it can accurately judge that, like a `human`, the performance of machine's nlp can be said to be excellent.
+A `Language Model` is a model that **assigns probabilities to word sequences(sentences)**. When there are certain sentences, the machine says "This sentence is appropriate!", "This sentence makes no sense!" and "If it can accurately judge that", like a `human`, the performance of machine's nlp can be said to be excellent.
 <br>
 <br>
 In this post, we learn about the `Statistical Language Model(LSM)` based on `statistics`. Statistical-based language models have many limitations in approximating the nlp we actually use, and these days, as artificial neural networks have solved many of these limitations, Statistical-base language models have decreased in use. But nonetheless, an understanding of the `statistics-based methodology` helps to get a holistic view of the language model.
