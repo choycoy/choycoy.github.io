@@ -1,0 +1,314 @@
+---
+title: "What I have learnt these days ~17/01/23"
+tags:
+  - WILT
+  - Python
+---
+💡 This post introduces what I have learnt these days ~17/01/23.
+{: .notice--warning}
+
+# 1. Variable and List
+I realise that we do not have to declare every data type of variables, Unlikely in java, so it was so unfamiliar and surprising. Especially, the function `sort()` was impressive since it can be used without import anything.
+
+# 2. Function and Console I/O
+- Clarified between `parameter` and `argument`.
+e.g. `parameter`: the input interface of function, `argument`: the actual input inserted in parameter.
+- learnt `input()`, the string input function on console
+e.g. temperature = float(input("enter the something: "))
+- `print formatting`
+<br>
+(1) `%string` e.g. print("%d %d %d" % (1,2,3))
+<br>
+(2) `format Function` e.g. print("{} {} {}".format("a","b","c"))
+<br>
+(3) `fstring` e.g. name = 'choycoy' print(f'{name:20}')
+<br>
+<br>
+However, when printing we should clarify the data type of variable which will be printed such as `%d`, `%s` and `%f`. That was interesting. Also using `padding`, we can arrange letters by **padding**.
+
+# 3. Conditionals and Loops
+- use `elif` statement unlikely `else if` in java
+- for loop e.g. for looper in `range(0,5), range(0,5) = [0,1,2,3,4] = range(5)`
+
+```
+for i in 'abcdefg':
+  print(i)
+
+for i in ['americano', 'latte', 'tea']
+  print(i)
+```
+So amazing, we can do implement these thing simply.
+```
+for i in range(10):
+  print (i,)
+else:
+  print ("EOP")
+
+i =0
+while i < 10:
+  print (i,)
+  i += 1
+else:
+  print ("EOP")
+```
+If the repetition condition is not satisfied, it is performed once at the end of the repetition.
+
+
+- Indentation Error
+```
+x = 2
+ y = 5 # IndentationError
+print (x+y)
+```
+- Logical error: __name
+```
+def addition(x, y):
+  return x+y
+def multiplication(x, y):
+  return x*y
+def divided_by_2(x):
+  return x/2
+if __name__ == '__main__': # the code in __name__ is not operated when calling it in python Shell
+  print(addition(10,5))
+  print(multiplication(10,5))
+  print(divided_by_2(50))
+```
+
+# 4. String and advanced function concept
+- `String`: store the string data as sequence data.
+- One alphabet uses 1byte in memory storage.
+```
+>>>import sys
+>>>print(sys.getsizeof('a'). sys.getsizeof('ab'), sys.getsizeof('abc'))
+50 51 52
+```
+- `Indexing`: each **character** in the string has `each offset`, using this offset, get the assigned value
+- same as `List`
+```
+>>> a = 'abcde'
+>>> print(a[0], a[4])
+>>> print(a[-1], a[-5])
+```
+![index](https://user-images.githubusercontent.com/40441643/212806890-8294dff4-9317-473b-9ebf-f147fc4f5177.PNG)
+
+- String operations
+```
+>>> a = 'TEAM'
+>>> B = 'LAB'
+>>> print(a+ " "+b)
+TEAM alphabet
+>>> print(a*2 + " " + b*2)
+TEAMTEAM LABLAB
+>>> if 'A' in a:
+    print(a)
+    else:
+      print(b)
+TEAM
+```
+This **multiplication between strings** part was so impressive, it would be difficult if we implement it using java and various string functions can be used such as `count()`, `find()` and `strip()`.
+
+- the way to pass the parameter in the function
+<br>
+(1) Call by value: When passing an argument to a function, only the value is passed. Changing the value of an `argument` within a function does not affect the `caller`.
+<br>
+(2) Call by Reference: When passing an argument to a function, the `memory address` is passed. When the argument value is changed within the function, the value of the `caller` is also changed.
+<br>
+(3) Call by Object Reference: How Python address `object`s are passed to functions. It refers to the `passed object` and affects the caller when changed, but does not affect the `caller` when creating a `new object`.
+
+```
+def spam(eggs):
+  eggs.append(1) #
+  eggs = [2, 3] # created new Object
+
+ham = [0]
+spam(ham)
+print(ham) # [0, 1]
+```
+- swap function
+
+```
+def swap_offset (offset_x, offset_y):
+  temp = a[offset_x]
+  a[offset_x] = a[offset_y]
+  a[offset_y] = temp
+
+def swap_offset (offset_x, offset_y):
+  temp = a[offset_x]
+  a[offset_x] = a[offset_y]
+  a[offset_y] = temp
+```
+(1) swap_offset: directly change the `global value` in the list a
+<br>
+(2) swap_reference: change the `object address` of the list a
+
+- scoping rule
+<br>
+(1)`Local variable`: used in the **function**
+<br>
+(2)`Global variable`: used in the **whole program**
+
+- function type hints
+```
+def do_function(var_name: var_type) -> return_type:
+  pass
+def type_hint_example(name: str) -> str:
+  return f"Hello, {name}"
+```
+- `function docstring`, using **three quotation marks**
+- `flake8`: the standard of **python coding convention**
+
+# 5. Python Data Structure
+- `stack` and `queue` with list
+- `tuple`: the list whose values can `not be changed`, can be used same as the operation, indexing and slicing of list, use **()** when declaration.
+- `set`: **no order and no duplicate**, e.g. s = set([1,2,3])
+- `dictionary`: **{key: value}**, search the value using `key`
+- `Collection`: the expanded data structure(module) about List, Tuple, Dict
+- `deque`: the module which supports `stack`, `queue`, the characteristic of `Linked List` such as `rotate` and `reverse` and the functions of `list`. Much faster than the list in the data structure, **efficient memory structure**.
+```
+from collections import deque
+deque_list = deque()
+for i in range(5):
+  deque_list.append(i)
+print(deque_list)
+deque_list.appendleft(10)
+```
+- `OrderedDict`: Unlike dict, return the data as input ordered
+- `DefaultDict`: assign the **default value** in Dict type, the method when updating new value.
+```
+from collections import defaultdict
+d = defaultdict(object) # created Default dictionary
+d = defaultdict(lambda: 0) #set the value of Default as 0
+print(d["first"])
+```
+- `text-mining approach`, Vector Space Model
+
+```
+from collections import OrderedDict
+from collections import defaultdict
+
+text = """A press release is the quickest and easiest way to get free publicity. If
+well written, a press release can result in multiple published articles about your
+firm and its products. And that can mean new prospects contacting you asking you to
+sell to them. ….""".lower().split()
+
+print(text)
+
+word_count = defaultdict(lambda: 0) # Default 값을 0으로 설정합
+for word in text:
+    word_count[word] += 1
+for i, v in OrderedDict(sorted(
+    word_count.items(), key=lambda t: t[1], reverse=True)).items():
+    print(i, v)
+```
+
+```
+['a', 'press', 'release', 'is', 'the', 'quickest', 'and', 'easiest', 'way', 'to', 'get', 'free', 'publicity.', 'if', 'well', 'written,', 'a', 'press', 'release', 'can', 'result', 'in', 'multiple', 'published', 'articles', 'about', 'your', 'firm', 'and', 'its', 'products.', 'and', 'that', 'can', 'mean', 'new', 'prospects', 'contacting', 'you', 'asking', 'you', 'to', 'sell', 'to', 'them.', '….']
+and 3 to 3 a 2 press 2 release 2 can 2 you 2 is 1 the 1 quickest 1....
+```
+- `Counter`: return the **number of data element** which is sequence type as `dict`, provides the function of `word counter`
+
+```
+from collections import Counter
+c = Counter('gallahad')
+print(c)
+```
+
+```
+Counter({'a': 3, 'l': 2, 'g': 1, 'h': 1, 'd': 1})
+```
+- `namedtuple`: store data structure as `tuple`, store the variable of data which will be stored by already defining
+```
+from collections import namedtuple    # x, y = p
+Point = namedtuple('Point', ['x', 'y'])   # print(x, y)
+p = Point(11, y=22)   # print(p.x + p.y)
+print(p[0] + p[1])    # print(Point(x=11, y=22))
+```
+<br>
+# 6. Pythonic code
+- `split & join`
+- `list comprehension`: create **another list** using original list, faster than for + append approach
+```
+>>> result = [i for i in range(10)]
+>>> result
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+>>> result = [ i for i in range(10) if i %2 == 0]
+>>> result
+[0, 2, 4, 6, 8]
+```
+- `enumerate`: When extracting elements from a list, extract them by attaching a `number`
+```
+>>> for i, v in enumerate(['tic', 'tac', 'toe']):
+#  unpacking the index and values in the list
+... print (i, v)
+...
+0 tic
+1 tac
+2 toe
+```
+- `zip`: extract values from two lists in `parallel`
+```
+>>> alist = ['a1', 'a2', 'a3']
+>>> blist = ['b1', 'b2', 'b3']
+>>> for a, b in zip(alist, blist):
+... print (a,b)
+...
+a1 b1
+a2 b2
+a3 b3
+```
+- `lambda`: an anonymous function that can be used like a `function` without a function name
+```
+f = lambda x, y: x + y
+print(f(1,4))
+```
+- `map`: returns a map object(which is an iterator) of the results after applying the given function to each item of a given **iterable** (list, tuple etc.), generate values at runtime, memory efficient
+```
+ex = [1,2,3,4,5]
+f = lambda x, y: x + y
+print(list(map(f, ex, ex)))
+[2, 4, 6, 8, 10]
+```
+- `reduce`: Unlike the map function, the same function is applied to the `list` to `integrate`, used to apply a particular function passed in its argument to all of the `list elements` mentioned in the sequence passed along.
+```
+from functools import reduce
+print(reduce(lambda x, y: x+y, [1,2,3,4,5]))
+```
+
+- `iterable object`: An object that extracts data in sequence from a `sequence data`, used `__iter__` and `__next__` to be implemented, `iter()` and `next()` uses `iterable object` as iterator object
+```
+cities = ["Seoul", "Busan", "Jeju"]
+iter_obj = iter(cities)
+print(next(iter_obj))
+print(next(iter_obj))
+print(next(iter_obj))
+```
+- `generator`: a function that uses `iterable objects` in a special form, returns value to memory when element is used = return only one element at a time using `yield`, general iterators use much larger `more capacity` than generators
+```
+def geneartor_list(value):
+  result = []
+  for i in range(value):
+    yield i
+```
+
+- `generator comprehension`: similar to `list comprehension`, create list in the generator form, also called as generator expression : Make a function that returns `data type of list` a `generator`, consider generator expressions when dealing with large data, there is no difficulty in processing even if the data is large, use generators when processing `file data`
+```
+gen_ex = (n*n for n in range(500))
+print(list(gen_ex))
+```
+- `function passing arguments`: keyword arguments, default arguments, variable-length arguments: **variable-length asterisk**, how to use an `unknown number of variables` as function `parameters`, variable arguments generally use `*args` as the variable name, saves the value that comes after existing parameter as a `tuple`
+```
+def asterisk_test_2(*args):
+  x, y, z = args
+  return x, y, z
+print(asterisk_test_2(3, 4, 5))
+(3, 4, 5)
+```
+- `keyword variable-length`: denote parameter using `two asterisk(*)`, the input can be used only `dict type`
+```
+def kwargs_test_3(one,two,*args,**kwargs):
+    print(one+two+sum(args))
+    print(kwargs)
+kwargs_test_3(3,4,5,6,7,8,9, first=3, second=4, third=5)
+42
+{'first': 3, 'second': 4, 'third': 5}
+```
