@@ -14,8 +14,8 @@ e.g. How can we create a course registration program?
 <br>
 Objects: some kind of stuff in real life, which has `attribute` and `action`. In OOP, they are represented as `variable` and `method`, respectively.
 <br>
-<br>
 Object consists of `class` and `instance`.
+<br>
  `attribute` is added with `__init__` and `self`.
  `__init__` is the constructor of the class that initialise the object's state.
  ```
