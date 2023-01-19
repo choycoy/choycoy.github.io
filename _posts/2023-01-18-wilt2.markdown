@@ -1,0 +1,118 @@
+---
+title: "What I learnt today 18/01/23"
+tags:  
+  - WILT
+  - Python
+---
+💡 This post introduces what I learnt today 18/01/23.
+{: .notice--warning}
+# Python Object-Oriented Programming
+e.g. How can we create a course registration program?
+- objects: professor, student, admin
+- action: register course, input course
+- data: the list of course registration, the list of courses
+
+Objects: some kind of stuff in real life, which has `attribute` and `action`. In OOP, they are represented as `variable` and `method`, respectively.
+<br>
+<br>
+Object consists of `class` and `instance`.
+ `attribute` is added with `__init__` and `self`.
+ `__init__` is the constructor of the class that initialise the object's state.
+ ```
+class SoccerPlayer(object):
+    def __init__(self, name, position, back_number):
+      self.name = name
+      self.postion = position
+      self.back_number = back_number
+```
+<br>
+Adding method(action) is same as original function but `self` should be added to be `class function`. Input the initial value with Object name declaration. `self` means the created instance itself.
+```
+choycoy = SoccerPlayer("choycoy", "MF", 10)
+```
+Above `choycoy` is the name of object, `SoccerPlayer` is the name of class, and `("choycoy", "MF", 10)` is the interface of __init__ function or initialisation
+- OOP characteristics
+<br>
+(1) `Inheritance`: use the **properties and methods** from the **parent class** to create inherited `child classes`.
+<br>
+<br>
+(2) `Polymorphism`: write the internal logic of the `method` with the **same name** differently. Due to `dynamic typing` characteristics, it usually occurs in inheritance of  the same parent class in Python.
+<br>
+e.g.
+<br>
+![polymorphism](https://user-images.githubusercontent.com/40441643/213451685-ccd0c87a-c76c-4519-90b3-a8916ec43093.PNG)
+<br>
+<br>
+(3) `Visibility`: adjusting the level at which information of an object can be viewed, no need to see all variables inside an object.
+
+
+`Encapsulation`: information hiding. When designing classes, minimising interference/information sharing between classes
+<br>
+<br>
+**Naming rule**
+<br>
+(1) `snake-case`: add `-` in the space, used for `method and variable name`
+<br>
+<br>
+(2) `CamelCase`: put `capital letter` in the space, used for `Class name`
+<br>
+<br>
+**Private variable**: a name prefixed with an `underscore` e.g. self.__items = []
+<br>
+<br>
+**Property decorator**: return the hidden variable and call the method as variable by property decorator.
+```
+class Inventory(object):
+  def __init__(self):
+      self.__items = []
+  @property
+  def items(self):
+      return self.__items
+
+items = my_inventory.items
+items.append(Product())
+print(my_inventory.get_number_of_items())
+```
+<br>
+**First-class objects**: use method as variable or parameter.
+```
+def square(x):
+    return x * x
+f = square
+f(5)
+```
+
+```
+def square(x):
+    return x * x
+def cube(x):
+    return x*x*x
+def formula(method, argument_list):
+    return [method(value) for value in argument_list]
+```
+<br>
+**Inner Function**: exists other function in the function.
+```
+def print_msg(msg):
+    def printer():
+        print(msg)
+    return printer
+
+another = print_msg("Hello, Python")
+another()
+```
+<br>
+**Closure**: return inner function as the return value.
+```
+def star(func):
+    def inner(*args, **kwargs):
+        print("*" * 30)
+        func(*args, **kwargs)
+        print("*" * 30)
+    return inner
+
+@star
+def printer(msg):
+print(msg)
+printer("Hello")
+```
