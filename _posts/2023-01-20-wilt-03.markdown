@@ -1,0 +1,82 @@
+---
+title: "What I learnt today 19/01/23"
+tags:
+  - WILT
+  - Python
+---
+💡 This post introduces what I learnt today 19/01/23.
+{: .notice--warning}
+
+# 1. Module and Project
+`namespace`: How to scope when calling a `module`. Functions, classes, etc can exist in a module. You can select and call only the necessary contents by using the `from` and `import` keywords.
+- set `Alias`: using the module name as nickname
+```
+import fah_converter as fah
+print(fah_converter_convert_c_to_f(41.6))
+```
+- call **specific function or class** in the `module`
+```
+from fah_converter import convert_c_to_f
+print(convert_c_to_f(41.6))
+```
+- call all functions or class in the `module`
+```
+from fah_converter import *
+print(convert_c_to_f(41.6))
+```
+
+`package`: a bunch of code which makes one big project, it is connect with various modules and folder, keyword file name are used such as `__init__` `__main__`.
+<br>
+<br>
+**Making a package**
+## 1. create subdivided functions into folders
+e.g. game > image, sound, stage
+## 2. implement the necessary modules for each folder
+```
+# echo.py
+def echo_play(echo_number):
+    print("echo {} number start".format(echo_number))
+```
+## 3. First Test-python shell
+```
+>>> import echo
+>>> echo.echo_play(10)
+echo 10 number start
+```
+## 4. Organising `__init__.py` by folder
+![package](https://user-images.githubusercontent.com/40441643/213643235-5bc9554b-3733-4a09-96d8-43a3b1b49d06.PNG)
+<br>
+<br>
+`__init__.py`: to tell current folder is `package`, contains both **subfolders and py files(modules)**, use `import` and `__all__` keyword.
+
+```
+__all__ = ['image', 'stage', 'sound']
+
+from . import image
+from . import stage
+from . import sound
+```
+![init](https://user-images.githubusercontent.com/40441643/213644427-79f90121-391f-43f6-a00d-5ffd51feedc7.PNG)
+
+## 5. Create __main__.py file
+
+```
+from stage.main import game_start
+from stage.sub import set_stage_level
+from image.character import show_character
+from sound.bgm import bgm_play
+
+if __name__ == '__main__':
+    game_start()
+    set_stage_level(5)
+    bgm_play(10)
+    show_character()
+```
+## 6. Execution-Calling with just the package name
+```
+python game
+Game Start
+set stage level: 5
+BGM 10 number start
+show_character
+```
