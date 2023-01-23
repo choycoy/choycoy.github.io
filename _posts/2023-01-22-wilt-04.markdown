@@ -1,0 +1,190 @@
+---
+title: "What I learnt today 22/01/23"
+tags:
+  - WILT
+  - Python
+---
+💡 This post introduces what I learnt today 22/01/23.
+{: .notice--warning}
+
+# 1. Exception
+- predictable exception: exceptions that can be recognised in advance.
+<br>
+e.g. Wrong input by user, no file when calling file: must be explicitly defined by the developer.
+- unpredictable exception: exceptions that occur during the interpreter process, developer mistakes.
+<br>
+e.g. call values outside the range of the list, divide by inter 0: automatically invoked by interpreter when execution is not possible.
+-> need exception handling, try ~ except grammar
+
+```
+try:
+    code that can throw an exception
+except <Exception Type>:
+    code to respond when an exception occurs
+```
+
+
+```
+for i in range(10):
+    try:
+        print(10/i)
+    except ZeroDivisionError:
+        print("Not divided by 0")
+```
+
+- Built- in Exception: basic exceptions are provided
+<br>
+(1) `IndexError`: when the index range of the list is exceeded
+<br>
+(2) `NameError`: when calling a variable that does not exist
+<br>
+(3) `ZeroDivisionError`: when dividing a number by zero
+<br>
+(4) `ValueError`: when converting the string/number that can not be converted
+<br>
+(5) `FileNotFoundError`: when calling the file that does not exist
+
+```
+for i in range(10):
+    try:
+        print(10 / i)
+    except ZeroDivisionError as e:
+        print(e)
+        print("Not divided by 0")
+```
+- `try~except~else`
+
+
+```
+try:
+    code that can throw an exception
+except <Exception Type>:
+    code to respond when an exception occurs
+else:
+    code to respond when an exception does not occur
+```
+
+```
+for i in range(10):
+    try:
+        result = 10/i
+    except ZeroDivisionError:
+        print("Not divided by 0")
+    else:
+        print(10/i)
+```
+
+- `try~except~finally`
+
+```
+try:
+    code that can throw an exception
+except <Exception Type>:
+    code to respond when an exception occurs
+finally:
+    executed whether or not an exception occurs
+```
+
+```
+try:
+    for i in range(1, 10):
+      result =  10//i
+      print(result)
+except ZeroDivisionError:
+    print("Not divided by 0")
+finally:
+  print("It is over.")
+```
+
+- `raise exception`: Forcibly throws an exception as needed
+
+```
+raise <Exception Type> (Exception)
+```
+
+```
+while True:
+    value = input("Please enter an integer value to convert")
+    for digit in value:
+        if digit not in "01234556789":
+            raise ValueError("You have not entered the number value.")
+    print("A number converted to an integer value -", int(value))
+```
+
+- `assert exception`: throws an exception if certain conditions are not satisfied
+
+```
+assert exception condition
+```
+
+```
+def get_binary_number(decimal_number):
+    assert isinstance(decimal_number, int)
+    return bin(decimal_number)
+
+print(get_binary_number)
+```
+
+The `isinstance() function` returns True if the specified object is of the specified type, otherwise False.
+e.g. Check if "Hello" is one of the types described in the type parameter:
+```
+x = isinstance("Hello", (float, int, str, list, dict, tuple))
+```
+
+# 2. File Handling
+- Python File I/O, `open` is used to handle file in python
+```
+f = open("<File Name>", "Access Mode")
+f.close()
+```
+(1) `r`: read mode, used when only reading a file
+<br>
+(2) `w`: write mode, used when only writing a file
+<br>
+(3) `a`: add mode, used when adding new contents in the end of file
+- `read()`: return the contents in the txt file as string
+```
+f = open("example.txt", "r")
+contents = f.read()
+print(contents)
+f.close()
+```
+- read() with `with`
+```
+with open("example.txt", "r") as my_file:
+    contents = my_file.read()
+    print(type(contents), contents)
+```
+
+- `readlines`: read line by line and return as list type
+```
+with open("example.txt", "r") as my_file:
+    content_list = my_file.readlines()
+    print(type(content_list))
+    print(content_list)
+```
+
+- Read one line at each execution
+```
+with open("example.txt", "r") as my_file:
+    i = 0
+    while True:
+        line = my_file.readline()
+        if not line:
+            break
+        print(str(i) + "===" + line.replace("\n", ""))
+        i = i + 1
+```
+
+- Word statistical information calculation
+
+```
+with open("example.txt", "r") as my_file:
+    contents = my_file.read()
+    word_list = contents.split(" ")
+    line_list = contents.split("\n")
+
+print("Total number of characters:", len(contents))
+print("Total number of words:", len(word_list))
+print("Total number of lines:", len(line_list))
+```
