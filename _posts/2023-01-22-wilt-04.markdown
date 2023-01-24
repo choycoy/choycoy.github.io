@@ -188,3 +188,191 @@ print("Total number of characters:", len(contents))
 print("Total number of words:", len(word_list))
 print("Total number of lines:", len(line_list))
 ```
+- Python's File Write, mode = "w", encoding ="utf8"
+```
+f = open("count_log.txt", 'w', encoding = "utf8")
+for i in range(1,11):
+    data = "the %d row. \n" % i
+    f.write(data)
+f.close()
+```
+
+- Mode "a" is addition mode
+```
+with open("count_log.txt", 'a', encoding = "utf8") as f:
+    for i in range(1,11):
+    data = "the %d row. \n" % i
+    f.write(data)
+```
+- Handling directory using os module
+```
+import os
+os.mkdir("log")
+```
+- Check whether the directory does exist or not
+```
+if not os.path.isdir("log"):
+    os.mkdir("log")
+```
+- Create Log File
+
+```
+import os
+if not os.path.isdir("log"):
+    os.mkdir("log")
+if not os.path.exists("log/count_log.txt"):
+    f = open("log/count_log.txt", "w", encoding = "utf8")
+    f.write("The record is started\n")
+    f.close()
+
+with open("log/count_log.txt", 'a', encoding ="utf8") as f:
+    import random, datetime
+    for i in range (1,11):
+        stamp = str(datetime.datetime.now())
+        value = random.random() *1000000
+        log_line = stamp + "\t" + str(value) + "value is created" + "\n"
+        f.write(log_line)
+```
+- `shutil.copy`: file copy function
+```
+import shutil
+source  = "example.txt"
+test = os.path.join("abc", "example2.txt")
+shutil.copy(source, dest)
+```
+example.txt exists in the abc directory.
+
+- `Pickle`: A built-in object that **persists** Python's objects, store information during execution such as data and objects -> `load` it and use it, there are many uses such as information to be stored, calculation results (models), etc.
+
+```
+import pickle
+
+f = open("list.pickle", "wb") //write binary file
+test = [1,2,3,4,5]
+pickle.dump(test, f)
+f.close()
+
+f = open("list.pickle", "rb") //read binary file
+test_pickle = pickle.load(f)
+print(test_pickle)
+f.close()
+```
+
+```
+import pickle
+
+class Multiply(object):
+  def __init__(self, multiplier):
+      self.multiplier = multiplier
+  def multiply(self, number):
+      return number * self.multiplier
+
+multiply = Multiply(5)
+multiply.multiply(10)
+
+ f = open("multiply_object.pickle", "wb")
+ pickle.dump(multiply, f)
+ f.close()
+
+ f  = open("multiply_object.pickle", "rb")
+ multiply_pickle = pickle.load(f)
+ multiply_pickle.multiply(5)
+ ```
+
+# 3. Logging Handling
+- `Logging`: recording information that occurs while a program is running, user access program exception, use of specific function, print it on console screen, record it in file, record it in DB, etc, analyse recorded logs to derive meaningful results, records to be left at the time of execution, records to be left at the time of development.
+
+- `print` vs `logging` : it is also possible to record in `print`, however, records left only in the console window cannot be used for analysis, sometimes it is necessary to record `by level`(development, operation), there is a need to record separate logging for each module, a module that systematically supports these functions is required.
+
+- Python's basic log management module
+
+```
+import logging
+
+logging.debug("Wrong!")
+logging.info("Need confirm")
+logging.warning("Be careful")
+logging.error("You have got an error")
+logging.crticial("You are in danger")
+```
+- `logging level`: depending on the progress of the program, logs of different levels are output, supports so that different logs can be left at each development and operation time, **DEBUG > INFO > WARNING > ERROR > CRITICAL**, the most basic setting information for `log management`.
+<br>
+<br>
+(1)`debug`: leaves log information that needs to be recorded during development, e.g. call A as next function, change variable A to something.
+<br>
+(2)`info`: notification of information while processing is in progress, e.g. server started, server shut down, user A accesses the program.
+<br>
+(3)`warning`: it is possible to process incorrectly entered information by the user, but notify when **unintended information** is received during original development, e.g. str input was expected, but int was entered -> processing with `Str casting`, expected a two-dimensional list as an argument to the function but a one-dimensional list is entered -> processing after converting it to two-dimensional
+<br>
+(4)`error`: notification that an error occurred due to `incorrect processing`, but the program can operate, e.g. need to write to a file but the file does not exist -> notify the user after handling the `exception`, unable to connect to external services
+<br>
+(5)`critical`: notification of data loss or program can **no longer operate** due to `incorrect processing`, e.g. the file was deleted due to incorrect access, forced shutdown by user.
+
+```
+import logging
+
+if __name__ =='__main__':
+    logger = logging.getLogger("main")
+    logging.basicConfig(level = logging.DEBUG)
+    logger.setLevel(Logging.INFO)
+
+  # stream_handler = logging.FileHandler(
+  #   "my.log", mode = "w", encoding = "utf8")
+  # logger.addHandler(stream_handler)
+
+    logging.debug("Wrong!")
+    logging.info("Need confirm")
+    logging.warning("Be careful")
+    logging.error("You have got an error")
+    logging.crticial("You are in danger")
+```
+`stream_handler` determines where the output will be printed.
+<br>
+<br>
+However, in logging, when running the actual program, several settings are required such as data file location, file storage location, operation type, etc. We need a way to set this information.
+
+- (1)`configparser`: in the file, saves the execution settings of the program to a file, use a configuration file set in the form of section, `key` and `value`, use after calling the setting file as a **dict type**.
+
+```
+import configparser
+congif = configparser.ConfigParser()
+config.sections()
+
+config.read('example.cfg')
+config.sections()
+
+for key in config['SectionOne']:
+    print(key)
+
+config[`SectionOne`]["status"]
+```
+![config](https://user-images.githubusercontent.com/40441643/214248488-706ec971-25a1-40ac-a32c-9e9f05c1d6eb.PNG)
+
+- (2) `argparser`: at run time, setting information is saved when running the program in the **console window**, almost all console-based python programs provided as standard, there are many special modules(TF), but argparse is generally used, called the command-line option.
+
+```
+import argparse
+
+parser = aparse.ArgumentParser(description="Sum two integers.")
+
+parser.add_argument('-a', "--a_value", dest = "A_value", help = "A integers", type = int)
+parser.add_argument('-b', "--b_value", dest = "B_value", help = "B integers", type = int)
+
+args = parser.parse_args()
+print(args)
+print(args.a)
+print(args.b)
+print(args.a + args.b)
+```
+- `Logging formatter`: the format of the log result can be specified.
+```
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(process)d %(message)s')
+```
+![loggingformatter](https://user-images.githubusercontent.com/40441643/214252819-ffd16628-e8d5-4867-a799-66efa48fa26b.PNG)
+
+- Log config file
+```
+logging.config.fileConfig('logging.conf')
+logger = logging.getLogger()
+```
+![logconfig](https://user-images.githubusercontent.com/40441643/214253677-acd58d1e-24fd-462b-8236-c41ab0c6e142.PNG)
