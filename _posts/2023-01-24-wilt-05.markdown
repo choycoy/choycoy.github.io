@@ -9,6 +9,7 @@ tags:
 
 # Python Data Handling
 Data storage methods we process: CSV, html, XML, JSON
+
 ## 1. Comma Separate Values
 `CSV`: text file with fields separated by **commas(,)**,it is easy to think of `excel` from data as a data format for writing regardless of program, it is also created by dividing it with tabs(TSV) and spaces(SSV), commonly called character-separated values(CSV), in excel, it can be used as a `save name as` function.
 - Creating CSV file using excel
@@ -44,13 +45,51 @@ for i in range(0,10):
 print(len(customer_list))
 ```
 
-- Process CSV as a CSV object
+- Process CSV as a `CSV object`
+<br>
 When processing data in the form of a text file, `pre-processing` is required for (",") in sentences, python provides a csv object to simply handle CSV files.
 <br>
 <br>
-Using the CSV object
+Using the `CSV object`
+
 ```
 import csv
 reader = csv.reader(f, delimiter = ',', quotechar ='"', quoting=csv.QUOTE_ALL)
 ```
 ![attribute](https://user-images.githubusercontent.com/40441643/214538373-5fdf6ffa-f434-4611-93d1-5fb36d6ed86a.PNG)
+
+```
+import csv
+seoung_nam_data = []
+header = []
+rownum = 0
+
+with open("korea_floating_population_data.csv", "r", encoding ="cp949") as p_file:
+  csv_data = csv.reader(p_file)
+  for row in csv_data:
+      if rownum == 0:
+          header = row
+      location = row[7]
+      if location.find(u"성남시") != -1:
+        seoung_nam_data.append(row)
+      rownum += 1
+
+with open("seoung_nam_floating_population_data.csv", "w", encoding="utf8") as s_p_file:
+    writer = csv.writer(s_p_file, delimiter='\t',quotechar="'", quoting = csv.QUOTE_ALL)  
+
+    writer.writerow(header)
+    for row in seoung_nam_data:
+        writer.writerow(row)
+```
+## 2. eXtensible Markup Language(XML)
+- language using TAG(MarkUp) which describes the structure and meaning of data
+- the value is displayed between TAG and TAG and can express structural information
+- similar syntax to HTML
+- typical data storage method
+
+## 3. JavaScript Object Notation(JSON)
+- data object representation method of JavaScript which is the original web language
+- concise and easy to understand by both machines and humans
+- data volume is small, conversion to code is easy
+- for this reason, it is widely used as an alternative to XML
+- similar to `Dict` Type in Python, data is represented as a pair `key:value`
