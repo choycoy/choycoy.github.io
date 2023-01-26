@@ -1,0 +1,130 @@
+---
+title: "What I learnt today 25/01/23"
+tags:  
+  - WILT
+  - Python
+---
+💡 This post introduces what I learnt today 25/01/23.
+{: .notice--warning}
+
+# Numpy (How can we represent the numerical operation in code?: use proper package)
+- Numerical Python, a library for the Python programming language
+<br>
+- adding support for large, multi-dimensional `arrays` and `matrices`, along with a large collection of high-level mathematical functions to operate on these arrays
+<br>
+- more faster than general list and **efficient memory**
+<br>
+- supports the process of data array without iteration
+<br>
+- provides various function related to `linear algebra`
+<br>
+- can integrate with the language such as C, C++ and Fortran
+
+## 1. ndarray
+```
+import numpy as np
+```
+generally call numpy using alias `np`
+
+- Array Creation
+
+```
+test_array = np.array([1,4,5,8], float)
+print(test_array)
+type(test_array[3])
+```
+
+```
+numpy.float64
+```
+
+1) create an array using `np.array` function -> `ndarray`
+<br>
+<br>
+2) numpy can have `one data type` in the array
+<br>
+<br>
+3) big difference between list and array, **dynamic typing not supported**
+<br>
+<br>
+4) create an array using Array of C
+<br>
+<br>
+![numpyarray](https://user-images.githubusercontent.com/40441643/214832896-a92e6548-b19b-4817-8d4c-33163761f19f.PNG)
+<br>
+<br>
+![ndarraydatastructure](https://user-images.githubusercontent.com/40441643/214834041-f595e70c-c837-4eb3-9dd3-3068115742f9.PNG)
+<br>
+```
+test_array = np.array([1,4,5,"8"], float) # even though input was string type
+print(test_array)           # array([1., 4., 5., 8.])
+print(type(test_array[3]))  # numpy.float64 : the output was converted to float automatically
+print(test_array.dtype)     # dtype('float64')
+print(test_array.shape)     # (4,)
+```
+- `shape`: returns the `dimension` composition of an object in a numpy array
+- `dtype`: returns the `data type` of numpy array
+- Array shape(vector)
+<br>
+information on the size and `shape` of Array(vector, matrix, tensor)
+<br>
+`(4,)` -> shape of ndarray **(type: tuple)**
+<br>
+![ndshape](https://user-images.githubusercontent.com/40441643/214887824-c31c4577-f1bb-4785-984f-d2ae8de8f6bf.PNG)
+<br>
+<br>
+![arrayshape](https://user-images.githubusercontent.com/40441643/214888315-1092305a-4de5-46c4-ad69-e189951fce31.PNG)
+<br>
+<br>
+- Array shape - `ndim` & `size`
+<br>
+`ndim`: number of dimension
+<br>
+`size`: number of data
+<br>
+![ndim](https://user-images.githubusercontent.com/40441643/214889489-ff6183b3-7613-4bbb-8096-efadc669ea9b.PNG)
+- Array dtype
+<br>
+`data type` of single element of Ndarray
+<br>
+the amount of **memory occupied** by each element is determined
+
+```
+np.array([1, 2, 3], [4.5, 5, 6]], dtype = int)
+```
+
+```
+array([1, 2, 3],
+  [4, 5, 6])
+```
+
+```
+np.array([1, 2, 3], [4.5, "5", "6"]], dtype = np.float32)
+```
+
+```
+array([[1. , 2. , 3.], [4.5, 5. , 6.  ]], dtype = float32)
+```
+<br>
+![c_compatiable](https://user-images.githubusercontent.com/40441643/214893859-3a652e5c-1860-4fde-9871-3bae1fc7a4e2.PNG)
+<br>
+<br>
+`nbytes`: return the **memory size** of ndarray object
+```
+np.array([1, 2, 3], [4.5, "5", "6"]], dtype = np.float32).nbytes
+```
+```
+24        32 bits = 4 bytes -> 6*4 bytes
+```
+```
+np.array([1, 2, 3], [4.5, "5", "6"]], dtype = np.int8).nbytes
+```
+```
+6       8 bits = 1 byte -> 6*1 bytes
+```
+```
+np.array([1, 2, 3], [4.5, "5", "6"]], dtype = np.float64).nbytes
+```
+```
+48      64 bits = 8 bytes -> 6 *8 bytes
+```
