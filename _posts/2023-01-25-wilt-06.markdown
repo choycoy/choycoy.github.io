@@ -128,3 +128,96 @@ np.array([1, 2, 3], [4.5, "5", "6"]], dtype = np.float64).nbytes
 ```
 48      64 bits = 8 bytes -> 6 *8 bytes
 ```
+
+## 2. Handling Shape
+- `reshape`
+<br>
+change the size of Array's shape(the number of elements is the same)
+
+![reshape](https://user-images.githubusercontent.com/40441643/215025806-eecedf5d-e7d4-4f76-bed0-9194db2ab93b.PNG)
+<br>
+
+```
+test_matrix = [[1,2,3,4], [1,2,5,8]]
+np.array(test_matrix).shape # (2,4)
+
+np.array(test_matrix).reshape(8,) # array([1,2,3,4,1,2,5,8])
+
+np.array(test_matrix).reshape(8,).shape # (8, )
+```
+If the size of array is same, it can be changed to be multi-dimensional.
+```
+np.array(test_matrix).reshape(2,4).shape  # (2,4)
+np.array(test_matrix).reshape(-1,2).shape # (4,2)
+np.array(test_matrox).reshape(2,2,2) # array([[1,2], [3,4]], [[1,2], [5,8]])
+np.array(test_matrix).reshape(2,2,2).shape # (2,2,2)
+```
+`-1`: the number of row is determined based on the **size**
+
+- `flatten`
+<br>
+convert **multi-dimensional array** to **one dimensional array**.
+
+![flatten](https://user-images.githubusercontent.com/40441643/215026656-e7ee7d86-8e05-44d9-ac58-84d7c274a217.PNG)
+<br>
+```
+test_matrix =[[[1,2,3,4], [1,2,5,8]], [[1,2,3,4], [1,2,5,8]]]
+np.array(test_matrix).flatten()
+```
+
+```
+array([1,2,3,4,1,2,5,8,1,2,3,4,1,2,5,8])
+```
+
+## 3. Indexing & Slicing
+- Indexing
+<br>
+
+```
+a = np.array([[1,2,3], [4.5, 5, 6]], int)
+print(a)
+print(a[0,0]) # two dimensional array representation 1
+print(a[0][0]) # two dimensional array representation 2
+
+a[0,0] = 12 # assign 12 in matrix 0,0
+a[0][0] = 5 # assign 12 in matrix 0,0
+```
+Unlikely the list, the representation such as `[0,0]` is provided in two dimensional array.
+<br>
+In case of matrix, the front means `row` and the back is `column`.
+
+```
+test_example = np.array([[1, 2, 3], [4.5, 5, 6]], int)
+test_example  # array([[1, 2, 3], [4, 5, 6]])
+test_example[0][0] # 1
+test_example[0, 0] # 1
+test_example [0, 0] = 12 # assign 12 in matrix 0,0
+test_example # array([[12, 2, 3], [ 4, 5, 6]])
+test_example[0][0] = 5 # assign 5 in matrix 0,0
+test_example[0,0] # 5
+```
+
+- Slicing
+<br>
+
+```
+a = np.array([[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]], int)
+a[:,2:] # more than second column of the entire row
+a[1,1:3]  # first column and second column of first row
+a[1:3]  # the entire of first row and second row
+```
+Unlikely the list, we can **slice with dividing the column and row**.
+<br>
+It is useful to extract **subset of matrix**.
+<br>
+![slicing2](https://user-images.githubusercontent.com/40441643/215054124-1e0d6881-fadd-4b4d-89ba-8a0f8378252d.PNG)
+
+## 4. Creation Function
+- `Arrange`
+<br>
+A command that creates a list of values by specifying a range of arrays.
+```
+np.arrange(30) # extract the integer from 0 to 29, arra([0, 1, ..., 29])
+np.arrange(0, 5, 0.5) # 0 is the start point, 5 is the end point, and 0.5 is step size, array([0., 0.5, 1,....4, 4.5])
+np.arrange(30).reshape(5,6)
+```
