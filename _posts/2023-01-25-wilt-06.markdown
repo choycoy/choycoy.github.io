@@ -215,9 +215,107 @@ It is useful to extract **subset of matrix**.
 ## 4. Creation Function
 - `Arrange`
 <br>
-A command that creates a list of values by specifying a range of arrays.
+A command that creates a list of values by **specifying a range** of arrays.
 ```
 np.arrange(30) # extract the integer from 0 to 29, arra([0, 1, ..., 29])
 np.arrange(0, 5, 0.5) # 0 is the start point, 5 is the end point, and 0.5 is step size, array([0., 0.5, 1,....4, 4.5])
 np.arrange(30).reshape(5,6)
 ```
+- `ones`, `zeros` and `empty`
+<br>
+(1) `zeros`: create `ndarray` with full 0s, `np.zeros(shape, dtype, order)`
+<br>
+```
+np.zeros(shape = (10, ), dtype = np.int8) # 10, create zero vector
+```
+```
+array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=int8)
+```
+```
+np.zeros((2, 5)) # 2 by 5, create zero matrix
+```
+```
+array([[0., 0., 0., 0., 0],
+       [0., 0., 0., 0., o]])
+```
+(2) `ones`: create `ndarray` with full 1s, `np.ones(shape, dtype, order)`
+```
+np.ones(shape= (10,), dtype = np.int8)
+```
+```
+array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=int8)
+```
+(3)`empty`: crate `empty ndarray` given shape, can initialise memory
+<br>
+```
+np.empty(shape=(10,), dtype=np.int8)
+```
+```
+array([ 0,  0,  0,  0,  0,  0,  0, 64, -72, 105], dtype = int8)
+```
+```
+np.empty((3, 5))
+```
+![empty](https://user-images.githubusercontent.com/40441643/215316225-6bdaf013-cf83-4a5e-b8f6-f7138769b8fc.PNG)
+<br>
+- `something_like`: return **one, zero or empty array** as much as the shape of original ndarray, e.g. one_like
+<br>
+```
+test_matrix = np.shape(30).reshape(5,6)
+np.ones_like(test_matrix)
+```
+![somethinglike](https://user-images.githubusercontent.com/40441643/215316811-361d2cc2-92dd-48a3-b89d-ebf3965533ab.PNG)
+- `identity`: create identity matrix, number of rows = n
+<br>
+```
+np.identity(n=3, dtype = np.int8)
+```
+```
+array([1, 0, 0],
+      [0, 1, 0],
+      [0, 0, 1], dtype = int8)
+```
+```
+np.identity(5)
+```
+![identity](https://user-images.githubusercontent.com/40441643/215317399-ed27d591-2ead-483d-8e62-eaf1538377a0.PNG)
+- `eye`: the diagonal of array is `1`, start index: k can be changed
+<br>
+```
+np.eye(N=3, M=5, dtype = np.int8)
+```
+```
+array([[1, 0, 0, 0, 0],
+      [0, 1, 0, 0, 0],
+      [0, 0, 1, 0, 0]], dtype=int8)
+```
+```
+np.eye(3)
+```
+```
+array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]])
+```
+```
+np.eye(3, 4, k=2)
+```
+```
+array([[0., 0., 1., 0., 0.],
+       [0., 0., 0., 1., 0.],
+       [0., 0., 0., 0., 1.])
+```
+- `diag`: extract the value of diagonal matrix
+<br>
+![diag](https://user-images.githubusercontent.com/40441643/215318369-cf98fe36-5a66-4a48-9cfc-349f70e1be2e.PNG)
+
+- `random sampling`: create the array with **sampling** by data distribution
+```
+np.random.uniform(0, 1, 10).reshape(2,5)  # uniform distribution
+```
+![uniform](https://user-images.githubusercontent.com/40441643/215318621-d4d3a84e-d0c1-4821-9d36-35ac748455ec.PNG)
+<br>
+```
+np.random.normal(0, 1, 10).reshape(2,5)   # normal distribution
+```
+![normal](https://user-images.githubusercontent.com/40441643/215318608-6ff368c2-65ef-4536-a96e-339c72aa30e4.PNG)
