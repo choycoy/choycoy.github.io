@@ -1,0 +1,165 @@
+---
+title: "What I learnt today 28/01/23"
+tags:
+  - WILT
+  - Python
+---
+💡 This post introduces what I learnt today 28/01/23.
+{: .notice--warning}
+# Data Handling Section, numerical python - numpy
+## 5. Operation Functions
+- `sum`
+<br>
+the sum of elements un ndarray, same as to the sum function of list.
+```
+test_array = np.arrange(1, 11)
+test_array.sum(dtype= np.float) # 55.0
+```
+
+- `axis`
+<br>
+the axis(dimension) when all of the operation function is operated.
+<br>
+
+![axis](https://user-images.githubusercontent.com/40441643/215385183-ef676a20-a64b-4201-9dfd-8ee4b46ae05e.PNG)
+
+```
+test_array = np.arrange(1, 13).reshape(3,4)
+test_array.sum(axis=1), test_array.sum(axis=0)
+
+(array([10, 26, 42]), array([15, 18, 21, 24]))
+```
+<br>
+![axis2](https://user-images.githubusercontent.com/40441643/215386495-a93c1d30-3667-4691-a61d-b4e5f12c1a6c.PNG)
+
+```
+third_order_tensor = np.array([test_array, test_array, test_array])
+third_order_tensor.sum(axis=0)
+- array(([ 3,  6,  9, 12],
+       [15, 18, 21, 24],
+       [27, 30, 33, 36]])
+third_order_tensor.sum(axis=1)
+- array(([15, 18, 21, 24],
+       [15, 18, 21, 24],
+       [15, 18, 21, 24]])
+third_order_tensor.sum(axis=2)
+- array([[10, 26, 42],
+       [10, 26, 42],
+       [10, 26, 42]])
+```
+- `mean & std`
+<br>
+return the mean and standard derivation of ndarray's elements.
+
+```
+test_array = np.arrange(1, 13).reshape(3,4)
+test_array.mean(), test_array.mean(axis=0)
+- (6.5, array([ 5., 6., 7., 8.,]))
+test_array.std(), test_array.std(axis=0)
+```
+
+- `Mathematical Functions`
+<br>
+call np.something, e.g. `np.exp(test_array)`, `np.sqrt(test_array)`
+
+- `concatenate`
+
+```
+a = np.array([1, 2, 3])
+b = np.array([2, 3, 4])
+np.vstack((a,b))
+
+array([[1, 2, 3],
+       [2, 3, 4]])
+
+a = np.array([ [1], [2], [3]])
+b = np.array([ [2], [3], [4]])
+np.hstack((a,b))
+
+array([[1, 2],
+       [2, 3],
+       [3, 4]])
+```
+![concatenate](https://user-images.githubusercontent.com/40441643/215393118-6ef618e1-9b9d-4d32-a6b2-e84651b2625d.PNG)
+<br>
+```
+a = np.array([[1, 2, 3]])
+b = np.array([[2, 3, 4]])
+np.concatenate( (a,b) , axis=0)
+
+array([[1, 2, 3],
+       [2, 3, 4]])
+
+a = np.array([[1, 2], [3, 4]])
+b = np.array([[5, 6]])
+np.concatenate( (a, b.T), axis=1)
+
+array([[1, 2, 5],
+       [3, 4, 6]])
+```
+
+## 6. Array Operations
+- Operations b/t arrays
+<br>
+Numpy supports the basic operations between arrays.
+
+```
+test_a = np.array([[1, 2, 3], [4, 5, 6]], float)
+test_a + test_a
+
+array([[ 2.,  4., 6.],
+       [ 8., 10., 12,]])
+
+test_a - test_a        
+array([[0., 0., 0.],
+       [0., 0., 0.]])
+
+test_a*test_a
+array([[  1.,  4.,  9.],
+       [ 16., 25., 46.]])
+```
+- `Element-wise operations`
+<br>
+operation when the shape is same between arrays.
+
+![elementwise](https://user-images.githubusercontent.com/40441643/215397398-8c8e44aa-8ea2-4418-b517-033a03bc7cc1.PNG)
+
+```
+matrix_a = np.arrange(1,13).reshape(3,4)
+matrix_a * matrix_a
+
+array([[  1,   4,   9,   16],
+       [ 25,  36,  49,   64],
+       [ 81, 100,  121, 144]])
+```
+- `Dot product`
+basic operation of matrix, the dot function is used
+<br>
+![dotproduct](https://user-images.githubusercontent.com/40441643/215398544-7c6b2df6-5349-46cf-9e05-f48367f663e0.PNG)
+
+```
+test_a = np.arrange(1,7).reshape(2,3)
+test_b = np.arrange(7, 13).reshape(3,2)
+
+test_a.dot(test_b)
+
+array([[ 58,  64],
+       [139, 154]])
+
+```
+
+- `transpose`
+transpose or `T attribute` are used.
+
+```
+test_a = np.arrange(1,7).reshape(2,3)
+
+array([[1, 2, 3],
+       [4, 5, 6]])
+
+test_a.transpose() # equal to test_a.T
+
+array([[1, 4],
+       [2, 5],
+       [3, 6]])
+```
