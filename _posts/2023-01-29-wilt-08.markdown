@@ -1,0 +1,120 @@
+---
+title: "What I learnt today 29/01/23"
+tags:
+  - WILT
+  - Python
+---
+💡 This post introduces what I learnt today 29/01/23.
+{: .notice--warning}
+
+## 1. What is a vector?
+- `vector`
+<br>
+A `vector` is a `list` or `array` whose elements are numbers.
+<br>
+![vector](https://user-images.githubusercontent.com/40441643/215706912-6e0c0f8e-5f61-4e75-899f-d04abd61e600.PNG)
+<br>
+<br>
+```
+x = [1, 7, 2]
+x = np.array([1, 7, 2])
+```
+- `norm`
+<br>
+Vector's norm is the distance from the origin.
+<br>
+`L1` - the norm is the **sum of the absolute values of the changes** in each component.
+<br>
+![norm](https://user-images.githubusercontent.com/40441643/215708888-d3cedb15-dff5-4501-a035-5047aa07c5a5.PNG)
+<br>
+<br>
+![norm1](https://user-images.githubusercontent.com/40441643/215709070-e810d8a4-9c53-482d-82f8-8c6a4ba36b0e.png)
+<br>
+<br>
+`L2`- calculate Euclidean distance using Pythagoras theorem
+<br>
+![norm2](https://user-images.githubusercontent.com/40441643/215709604-210e4ead-3d69-45b8-bb29-b0ea8f5f840e.png)
+
+```
+def l1_norm(x):
+    x_norm = np.abs(x)
+    x_norm = np.sum(x_norm)
+    return x_norm
+
+def l2_norm(x):
+    x_norm = x*x
+    x_norm = np.sum(x_norm)
+    x_norm = np.sqrt(x_norm)
+    return x_norm
+```
+
+## 2. What is a matrix?
+A `matrix` is two dimensional array whose elements are vector.
+<br>
+<br>
+![matrix](https://user-images.githubusercontent.com/40441643/215740179-160ec076-fee8-4d6b-884d-50eab6f2dd7d.PNG)
+<br>
+```
+x = np.array([[1, -2, 3],
+              [7, 5 , 0]
+              [-2, -1 , 2]])
+```
+<br>
+If a vector represents a point in space, a `matrix` represents **a number of points**.
+<br>
+![matrix2](https://user-images.githubusercontent.com/40441643/215741806-919aa260-3f3f-490c-ab10-21a1e143f6e2.PNG)
+<br>
+<br>
+-`Matrices` are understood as **operators** used in vector spaces.
+<br>
+-Matrix multiplication allows us to send vectors into **different dimension spaces**.
+<br>
+-Using matric multiplication, the pattern can be found and data can be compressed.
+<br>
+-All of `linear transform` can be calculated with matrix multiplication.
+<br>
+![matrix3](https://user-images.githubusercontent.com/40441643/215744314-05a6ffce-702a-47c9-80af-51f9d69bd4a2.PNG)
+- `Inverse Matrix`
+<br>
+A matrix that **reverses the operation** of matrix A is called an `inverse matrix` and is denoted by A^-1.
+<br>
+The inverse of a matrix can be computed only if the **row and column numbers are the same** and the `determinant` is non-zero.
+<br>
+![inversemat](https://user-images.githubusercontent.com/40441643/215745450-29a0499e-8285-4d69-b4ea-8c28bf43ce11.PNG)
+
+
+```
+X = np.array([[1, -2, 3],
+              [7, 5, 0],
+              [-2, -1,2]])
+
+np.linalg.inv(X)
+X @ np.linalg.inv(X)
+```
+
+- `Solving the system of equations`
+<br>
+using `np.linalg.pinv`, we can get the solution of the system of equations.
+<br>
+![sys](https://user-images.githubusercontent.com/40441643/215748090-009ee2b2-5cba-4509-9553-449c08bcf445.PNG)
+
+- `Linear Regression Analysis`
+<br>
+Using `np.linalgpinv`, we can find the linear regression expression which interprets the data as `linear model`.
+<br>
+![linearregression](https://user-images.githubusercontent.com/40441643/215748854-42184a3f-d32d-4057-af91-81866d55f9c7.png)
+<br>
+<br>
+![linearregression2](https://user-images.githubusercontent.com/40441643/215749527-ee18d2c7-f260-46fc-997a-f2e84e58c22f.png)
+<br>
+
+```
+from sklearn.linear_model import linearregression
+model = LinearRegression()
+model.fit(X, y)
+y_test = model.predict(x_test)
+
+X_ = np.array([np.append(x,[1]) for x in X])
+beta = np.linalg.pinv(X_) @ y
+y_test = np.append(x, [1]) @ beta
+```
