@@ -163,3 +163,231 @@ array([[1, 4],
        [2, 5],
        [3, 6]])
 ```
+- `broadcasting`
+<br>
+supports operation between arrays of **different shapes**.
+<br>
+![broadcastng](https://user-images.githubusercontent.com/40441643/215686812-ec52473a-aaaa-424c-8729-be97c24b88df.PNG)
+
+```
+test_mat = np.array([[1,2,3],[4,5,6]], float)
+scalar = 3
+
+test_mat + scalar
+
+array([[4., 5., 6.]
+       [7., 8., 9.]])
+```
+also supports the operation between **vector-matrix**
+<br>
+![broadcasting2](https://user-images.githubusercontent.com/40441643/215688300-e146a6f5-c79d-416a-b061-89c9d31902f3.PNG)
+<br>
+<br>
+![broadcasting3](https://user-images.githubusercontent.com/40441643/215688570-43b32357-21a1-4447-9781-40cd8b8e0cf7.PNG)
+
+```
+test_mat = np.arrange(1,13).resahpe(4,3)
+test_vec = np.arange(10,40,10)
+test_mat + test_vec
+
+test_mat +test_vec
+
+array([[11, 22, 33],
+       [14, 25, 46],
+       [17, 28, 39],
+       [20, 31, 42]])
+```
+
+- `Numoy performance`
+
+```
+def scalar_vector_product(scalar,vector):
+    result = []
+    for value in vector:
+        result.append(scalar*value)
+    return result
+
+iternation_max = 10000000
+
+vector = list(range(iternation_max))
+scalar = 2    
+
+%timeit scalar_vector_product(scalar,vector) # for loop
+%timeit [scalar*value for in range(iternation max)] # using list comprehension
+%timeit np.arrange(iternation_max)*scalar # using Numpy
+```
+<br>
+-`timeit`: the function to check the performance in the jupyter environment.
+<br>
+-General speed is: **for loop < list comprehension < numpy**.
+<br>
+-When for loop is processed 1000,000,000 times, the difference between function's performance is 4 times.
+<br>
+-Since Numpy is implemented as C, give up the `dynamic typin`g which is the big characteristic in python instead of having the performance.
+<br>
+-Numpy is used for large calculations.
+<br>
+-There is no any benefit in the speed of operations when assigning.
+
+## 7. Comparisons
+- `All & Any`
+<br>
+return if it is satisfied with a condition or not for all of data or any data in the array.
+```
+a = np.arrange(10)
+np.any(a>5), np.any(a<0) # any -> true if any element is satisfied with the condition
+(True, False)
+np.all(a>5), np.all(a<10) # all -> true if all element is satisfied with the condition
+(True, True)
+```
+- `Comparison Operation`
+<br>
+Numpy returns the result of comparison between elements in `boolean type` when the size of the array is the same.
+
+```
+test_a = np.array([1,3,0], float)
+test_b = np.array([5,2,1], float)
+test_a > test_b
+
+array([False, True, False], dtype=bool)
+
+test_a == test_b
+
+array([False, False, False], dtype=bool)
+
+(test_a > test_b).any()
+
+True
+
+a = np.array([1,3,0], float)
+np.logical_and(a > 0, a <3 )
+
+array([True, False, False], dtype=bool)
+
+b = np.array([True, False True], bool)
+np.logical_not(b)
+
+array([False, True, False], dtype=bool)
+
+c = np.array([False, True, False], bool)
+np.logical_or(b,c)
+
+array([True, True, True], dtype=bool)
+```
+
+- `np.where`
+
+```
+np.where(a > 0, 3, 2) # where(condition, True, False)
+
+array([3, 3, 2])
+
+a = np.arrane(10)
+np.where(a>5)
+
+(array([6, 7, 8, 9]) ,)
+
+a = np.array([1, np.NaN, np.Inf], float) # NaN, Not a Number
+np.isnan(a)
+
+array([False, True, False], dype=bool)
+
+np.isfinite(a)
+
+array([True, False, False], dtype=bool)
+```
+
+- `argmax & argmin`
+<br>
+return the maximum or minimum of index in the array
+
+```
+a = np.array([1,2,4,5,8,78,23,3])
+np.argmax(a), np.argmin(a)
+(5, 0)
+```
+![arg](https://user-images.githubusercontent.com/40441643/215695798-980bda3f-07f7-4c64-a989-e87c75d4e885.PNG)
+<br>
+returning based on the `axis`.
+```
+a = np.array([1,2,4,7], [9,88,6,45],[9,76,3,4]])
+np.argmax(a, axis=1), np.argmon(a, axis=0)
+
+(array([3, 1, 1]), array([0, 0, 2, 2])
+```
+
+## 8. Boolean & Fancy index
+- `boolean index`
+<br>
+Arrays in numpy can extract values according to specific conditions in the form of an array and comparison operation functions are all available.
+
+```
+test_Array = np.array([1, 4, 0, 2, 3, 8, 9, 7]), float)
+test_array > 3
+
+array([False, True, False, False, False, True, True, True], dtype=bool)
+
+test_Array[test_array > 3]
+
+array([ 4., 8., 9., 7.])  # return only the element of index which is True
+
+condition = test_array < 3
+test_array[condition]
+
+array([1., 0., 2.])
+```
+<br>
+![boolindex](https://user-images.githubusercontent.com/40441643/215698132-9b65e2f9-6145-4f9b-ad7a-b303aa3dd051.PNG)
+
+- `fancy index`
+<br>
+the method to extract the value using array as index value in Numpy.
+
+```
+a = np.array([2, 4, 6, 8], float)
+b = np.array([0, 0, 1, 3, 2, 1], int)
+a[b] # bracket index, extract the values of a using index == the values of b
+
+array([ 2., 2., 4., 8., 6., 4.])
+
+a.take(b) # same as bracket index
+
+array([ 2., 2., 4., 8., 6., 4.])
+```
+![fancyindex](https://user-images.githubusercontent.com/40441643/215699151-4e2955d6-597e-437c-9637-3d948028c609.PNG)
+<br>
+<br>
+also available in the form of `matrix`.
+<br>
+![fancyindex2](https://user-images.githubusercontent.com/40441643/215699351-8fcc58e4-5822-401e-aa66-4e96cea25110.PNG)
+<br>
+
+```
+a = np.array([1,4],[9,16]], float)
+b = np.array([0, 0, 1, 1, 0], int)
+c = np.array([0, 1, 1, 1, 1], int)
+a[b,c] # b is row index, c is column index
+
+array([ 1., 4., 16., 4.])
+```
+
+## 9. Numpy data i/o
+- `loadtxt & savetxt`
+<br>
+the function to read and store the `text type`.
+
+```
+a = np.loadtxt("example.txt")
+a_int = astype(int) # convert to int type
+
+np.savetxt('int.data.csv', a_int, delimiter ",")
+```
+
+- `numpy object, npy`
+<br>
+store as numpy object (`pickle`) and load it, stored as `binary file`.
+
+```
+np.save('npy.test', arr=a_int)
+npy_array = np.load(file="npy.test.npy")
+```
