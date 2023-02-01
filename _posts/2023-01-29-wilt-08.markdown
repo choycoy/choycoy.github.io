@@ -74,6 +74,7 @@ If a vector represents a point in space, a `matrix` represents **a number of poi
 -All of `linear transform` can be calculated with matrix multiplication.
 <br>
 ![matrix3](https://user-images.githubusercontent.com/40441643/215744314-05a6ffce-702a-47c9-80af-51f9d69bd4a2.PNG)
+
 - `Inverse Matrix`
 <br>
 A matrix that **reverses the operation** of matrix A is called an `inverse matrix` and is denoted by A^-1.
@@ -81,7 +82,6 @@ A matrix that **reverses the operation** of matrix A is called an `inverse matri
 The inverse of a matrix can be computed only if the **row and column numbers are the same** and the `determinant` is non-zero.
 <br>
 ![inversemat](https://user-images.githubusercontent.com/40441643/215745450-29a0499e-8285-4d69-b4ea-8c28bf43ce11.PNG)
-
 
 ```
 X = np.array([[1, -2, 3],
@@ -94,7 +94,7 @@ X @ np.linalg.inv(X)
 
 - `Solving the system of equations`
 <br>
-using `np.linalg.pinv`, we can get the solution of the system of equations.
+Using `np.linalg.pinv`, we can get the solution of the system of equations.
 <br>
 ![sys](https://user-images.githubusercontent.com/40441643/215748090-009ee2b2-5cba-4509-9553-449c08bcf445.PNG)
 
@@ -117,4 +117,172 @@ y_test = model.predict(x_test)
 X_ = np.array([np.append(x,[1]) for x in X])
 beta = np.linalg.pinv(X_) @ y
 y_test = np.append(x, [1]) @ beta
+```
+## 3. What is a differentiation?
+The differentiation is the optimisation method to measure the change according to variable's variation.
+<br>
+```
+import sympy as sym
+from sympy.abc import x
+
+sym.diff(sym.poly(x**2 + 2*x + 3), x)
+
+Poly(2*x + 2, x, domain='ZZ')
+```
+<br>
+The differentiation can get the function f's slope of tangent given the point (x,f(x)).
+<br>
+![differentiation](https://user-images.githubusercontent.com/40441643/215942905-0627d07c-a61a-4a56-9d6c-d385b9b6b0a5.PNG)
+<br>
+If `h` goes to `0`, the slope of function f **converges to the slope of tangent at (x, f(x))**.
+<br>
+If we know the slope of tangent at some point, we know in which direction the point must be moved to **increase or decrease the function value**.
+<br>
+<br>
+If we increase the function value, add the differentiation value and if we decrease the function value, subtract the differentiation value.
+<br>
+<br>
+If we add the differentiation value, we call it `gradient ascent` and it is used to get the **maximum value**.
+<br>
+![differn2](https://user-images.githubusercontent.com/40441643/215949661-3b7b7585-6731-4948-b3ad-7aacbe242fa5.png)
+<br>
+It is used to **maximise** the objective function.
+<br>
+<br>
+On the other hand, if we subtract the differentiation value, we call it `gradient descent` and it is used to get the **minimum value**.
+<br>
+![differn3](https://user-images.githubusercontent.com/40441643/215950178-57eb7d8f-d994-4204-a474-66361c13bac3.PNG)
+<br>
+It is used to **minimise** the objective function.
+<br>
+<br>
+The gradient ascent/descent stops moving if the slope of function reaches the **local point**.
+<br>
+<br>
+In the `local point`, the differentiation value is `0` and it cannot be updated anymore. Thus, the optimisation of objective function is finished automatically.
+<br>
+<br>
+![differn4](https://user-images.githubusercontent.com/40441643/215952068-e5ac43da-b38a-4d8e-86c4-f57bd0a327b7.png)
+<br>
+```
+# Input: gradient, init, lr, eps, Output: var
+# gradient: the function to calculate the differentiation
+# init: starting point, lr: learning rate, eps: Algorithm Termination Condition
+
+var = init
+grad = gradient(var)
+while(abs(grad) > eps): #(1)
+    var = var - lr * grad #(2)
+    grad = gradient(var) #(3)
+```
+(1) Since the computer is impossible to calculate **when the differentiation value becomes 0 accurately**, the termination condition is needed when the gradient is less than `eps`.
+<br>
+(2) As `lr` is the learning rate, the **updating speed** is adjusted through the differentiation.
+<br>
+(3) Keep updating the differentiation value until the termination condition is satisfied.
+```
+def func(val):
+    fun = sum.poly(x**2 + 2*x +3)
+    return fun.subs(x, val), fun
+
+def func_gradient(fun, val):
+    _, function = fun(val)
+    diff = sym.diff(function, x)
+    return diff.subs(x, val), diff
+
+def gradient_descent(fun, init_point, lr_rate =1e-2, epsilon=1e-5):
+    cnt = 0
+    val = init_point
+    diff, _ = func_gradient(fun, init_point)
+    while np.abs(diff) > epsilon:
+        val = val - lr_rate*diff
+        diff, _ = func_gradient(fun, val)
+        cont += 1
+
+    print("function: {}, num of operation: {}, minimum point: ({}, {})". format(fun(val)[1], cnt, val, fun(val[0]))
+
+gradient_descent(fun=func, init_point=np.random.uniform(-2,2))
+
+function: Poly(x**2 + 2*x + 3, x, domain = 'ZZ'), num of operation: 636, minimum point: (-0.999995047967832, 2.00000000002452)
+```
+- What if **the variable is a vector**?
+<br>
+If the input of multivariate function is a `vector`, we use a **partial differentiation**.
+<br>
+![partial](https://user-images.githubusercontent.com/40441643/215959020-224779ca-fbe6-4af9-99e1-f72cfa653607.png)
+<br>
+<br>
+![partial 2](https://user-images.githubusercontent.com/40441643/215959158-691250a7-f531-4c69-ac08-73e2f82eb764.PNG)
+<br>
+
+```
+import sympy as sym
+from sympy.abc import x, y
+
+sym.diff(sym.poly(x**2 + 2*x*y + 3) + sym.cos(x + 2*y), x)
+
+2*x + 2*y - sin(x + 2*y)
+```
+Using the `gradient vector` to calculate the partial differentiation by each variable, we can use the gradient descent/ascent.
+![partial3](https://user-images.githubusercontent.com/40441643/215960879-1f480554-53b0-416d-a740-815400e985ae.png)
+<br>
+- What is a `gradient vector`?
+<br>
+<br>
+![partial4](https://user-images.githubusercontent.com/40441643/215961184-5663ef92-6e66-41d2-b59b-36008da00b01.png)
+<br>
+<br>
+![gradientt](https://user-images.githubusercontent.com/40441643/215961721-43d27cf8-89d1-499c-87f2-f32da1bdf68e.png)
+<br>
+<br>
+![gradient2](https://user-images.githubusercontent.com/40441643/215962116-f06b778c-7586-48b2-83ed-02c3dbc61755.png)
+<br>
+<br>
+![gradient3](https://user-images.githubusercontent.com/40441643/215962456-00b83776-fcc2-4f8e-b898-9ce2abcb71aa.png)
+
+```
+Input: gradient, init, lr, eps, Output: var
+———————————————————————————————————————————
+# gradient: function to calculate the gradient vector
+# init: initial point, lr: learning rate, eps: Algorithm Termination condition
+
+var = init
+grad = gradient(var)
+while(norm(grad) > eps):
+    var = var - lr * grad
+    grad = gradient(var)
+```
+
+```
+# Multivariate Gradient Descent
+def eval_(fun, val):
+    val_x, val_y = val
+    fun_eval = fun.subs(x, val_x).subs(y, val_y)
+    return fun_eval
+
+def func_multi(val):
+    x_, y_ = val
+    func = sym.poly(x**2 + 2*y**2)
+    return eval_(func, [x_, y_]), func
+
+def func_gradient(val):
+    x_, y_ = val
+    _, function = fun(val)
+    diff_x = sym.diff(function, x)
+    diff_y = sym.diff(function, y)
+    grad_vec = np.array([eval_(diff_x), [x_, y_]), eval_(diff_y,[x_, y_])], dtype=float)
+
+def gradient_descent(fun, init_point, lr_rate=1e-2, epsilon=1e-5):
+    cnt = 0
+    val = init_point
+    diff, _ = func_gradient(fun, val)
+    while np.linalg.norm(diff) > epsilon:
+        val = val - lr_rate*diff
+        diff, _ = func_gradient(fun, val)
+        cnt += 1
+
+    print("function: {}, num of operation: {}, minimum point: ({}, {})". format(fun(val)[1], cnt, val, fun(val[0]))
+
+pt = [np.random.uniform(-2,2), np.random.uniform(-2,2)]
+gradient_descent(fun=func_munti, init_point=pt)
 ```
