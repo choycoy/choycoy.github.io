@@ -1,0 +1,131 @@
+---
+title: "What I learnt today 30/01/23"
+tags:
+  - WILT
+  - Python
+---
+💡 This post introduces what I learnt today 30/01/23.
+{: .notice--warning}
+
+# Neural Network, non-linear model
+![neural](https://user-images.githubusercontent.com/40441643/215969835-a2448868-32d1-4862-86f0-4033a439f893.png)
+<br>
+<br>
+Suppose that the row vector `oi` is the matrix multiplication of data `xi` and weight matrix `W` and intercept `b` vector.
+<br>
+![neural2](https://user-images.githubusercontent.com/40441643/215970578-4205f2e0-c68d-4a09-ab4c-1c81ab633939.PNG)
+<br>
+<br>
+We can imagine the model which explains the `p latent variable` by making p linear models by `d variables`.
+<br>
+![neural3](https://user-images.githubusercontent.com/40441643/215971662-61126a15-f0c8-485b-965f-727aa063f5f1.PNG)
+<br>
+By composing the softmax function to the output vector `o`, it becomes the probability function and it can be interpreted as the **probability of belonging to a specific class k**.
+
+- `softmax operation`
+<br>
+The `softmax function` is the operation to interpret the output of model as the `probability`.
+<br>
+When solving the classification problem, we can predict by combining the softmax function with the linear model.
+<br>
+<br>
+![softmax](https://user-images.githubusercontent.com/40441643/215975371-c0c08144-7a10-4de9-9967-78f6ca35e121.png)
+<br>
+e.g. using `softmax` function, we can convert the vector in Rp to the probability vector([1, 2, 0] -> [0.24, 0.67, 0.09])
+
+```
+def softmax(vec):
+    denumerator = np.exp(vec - np.mac(vec, axis = -1, keepdims=True))
+    numerator = np.sum(denumerator, axis=-1, keepdims=True)
+    val = denumerator / denumerator
+    return val
+
+vec = p.array([[1,2,0], [-1,0,1],[-10,0,10]])
+softmax(vec)
+```
+<br>
+However, when performing inference, softmax is not used by using an operation that outputs only the address with the **maximum value** as `1` as a `one-hot vector`.
+<br>
+<br>
+`Neural network` is the **composition of linear model and activation function**.
+<br>
+<br>
+The activation function `σ` makes new latent vector `H` = (σ(z1),...,σ(zn)) by individually applying latent vector `z` = (z1,...,zq) to each node as a nonlinear vector.
+<br>
+![activation](https://user-images.githubusercontent.com/40441643/216004382-45ddcf03-7f6a-430b-a942-f9e1f22862d6.png)
+- What is an `activation function`?
+<br>
+The `activation function` is the most important concept as nonlinear function defined on R.
+<br>
+<br>
+Deep learning without the activation function is same as the linear model.
+<br>
+<br>
+Even though the sigmoid function or tanh function are used traditionally, `ReLU` function is used in Deep Learning.
+<br>
+![activationfunction](https://user-images.githubusercontent.com/40441643/216007484-25486f4a-7df9-4baf-9f55-5db819e850fc.png)
+<br>
+<br>
+![secondneural](https://user-images.githubusercontent.com/40441643/216009335-0ef1f84f-ae73-4944-8dd5-4f0ecfdecfae.png)
+<br>
+When the latent vector `H` is linearly transformed again through the weight matrices `W(2)` and `b(2)` and output, it is a `two-layer neural network` with (W(2),W(1)) as `parameters`.
+<br>
+<br>
+`Multi Layer Perceptron(MLP)` is a function composed of **multiple layers of a neural networks**.
+<br>
+![neural7](https://user-images.githubusercontent.com/40441643/216011876-361b7900-2359-4745-80aa-c3cd88d8f056.png)
+<br>
+<br>
+`σ(Z)` is the matrix composed of **(σ(z1),...,σ(zn))**.
+<br>
+![neural8](https://user-images.githubusercontent.com/40441643/216012962-c72803ac-4c2b-4027-ba25-d26d841a1031.png)
+<br>
+<br>
+![neural9](https://user-images.githubusercontent.com/40441643/216013360-429419d0-cc37-49f0-b51e-e53110ce59a1.PNG)
+<br>
+We call the sequential neural network calculation until `ℓ = 1,...,L` is called `forward propagation`.
+<br>
+- Why do we need `multiple layers`?
+<br>
+We can approximate an arbitrary continuous function by second neural network.
+<br>
+However, more deeper layer makes learning `efficient` by reducing the number of nodes(neurons) to need for approximating the objective function.
+<br>
+<br>
+If the layer is `shallow`, the number of neurons to need is increased exponentially so the neural network should be **wide**.
+<br>
+![neural10](https://user-images.githubusercontent.com/40441643/216017235-80ad237d-c8ea-4c13-a6ad-5c2b89a9ced0.PNG)
+
+- `backpropagation algorithm`
+<br>
+Deep Learning uses `backpropagation algorithm` to learn {W(ℓ), b(ℓ)}L ℓ=1 used the parameter for each layer.
+<br>
+<br>
+When the loss function is `ℒ`, the backpropagation uses `∂ℒ/∂W(ℓ)` for calculation.
+<br>
+![backpropagation](https://user-images.githubusercontent.com/40441643/216018253-56507f89-a67b-4009-96bf-db15b6d37211.png)
+<br>
+<br>
+The gradient vector of each layer parameter is calculated from the front layer backward.
+<br>
+![backpropagation2](https://user-images.githubusercontent.com/40441643/216214054-abf26b58-64bd-49f1-b35c-1b8e55265c9c.png)
+<br>
+Backpropagation delivers the gradient vector through the chain-rule as the order of  `ℓ = L,...,1`.
+<br>
+<br>
+The `backpropagation algorithm` uses the auto-differentiation based on the **chain-rule** which is the differentiation method of composition function.
+<br>
+![chainrule](https://user-images.githubusercontent.com/40441643/216215636-d259f273-6cda-4469-a52b-9c96395c415e.png)
+<br>
+<br>
+The computer should remember the tensor value of each node for differentiation calculation.
+<br>
+![backpropagation](https://user-images.githubusercontent.com/40441643/216218682-9022c48b-ea6c-4f68-8759-d009393817bc.png)
+<br>
+<br>
+Since W(1) is a matrix, we need to find the partial differentiation for each component.
+<br>
+![2ndlayer](https://user-images.githubusercontent.com/40441643/216219388-59c9614c-3fb5-4709-8661-5f74db8ca16b.PNG)
+<br>
+<br>
+![2ndlayer2](https://user-images.githubusercontent.com/40441643/216219858-b2cb017e-3212-4db4-9035-df1432d70dcf.png)
