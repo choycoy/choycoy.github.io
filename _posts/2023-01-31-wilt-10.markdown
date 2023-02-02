@@ -1,0 +1,137 @@
+---
+title: "What I learnt today 31/01/23"
+tags:
+  - WILT
+  - Python
+---
+💡 This post introduces what I learnt today 31/01/23.
+{: .notice--warning}
+# Pandas(PAnel DAta)
+The standard library of structured data processing in python. It acts like a kind of `Excel` in python and can be used to preprocess data or use functions such as `pivot tables` that are widely used in **statistical processing**. `Pandas` is also developed based on `numpy`, and many functions are composed by referring R's data processing techniques.
+ <br>
+ ![pandas](https://user-images.githubusercontent.com/40441643/216268146-d97f2a22-edeb-47dd-a60f-07fc6f159f29.PNG)
+
+- Series Overview
+`Series`: a bunch of data(object) corresponds to one column of `DataFrame`.
+<br>
+subclass of `numpy.ndarray`
+<br>
+data: any type
+<br>
+**index labels** need not be ordered
+<br>
+duplicates are possible(but result in reduced functionality
+
+- Dataframe Overview
+<br>
+`DataFrame`: object including the whole data table.
+<br>
+![dataframe](https://user-images.githubusercontent.com/40441643/216275765-1806ee12-29fd-4507-b5b0-2ce0ef53f30b.PNG)
+<br>
+-Numpy array-like
+<br>
+-Each column can have a **different type**
+<br>
+-Row and column index
+<br>
+-Size mutable: insert and delete columns
+<br>
+-Series extraction: e.g. df.first_name, df["first_name"]
+<br>
+`loc - index location`: df.loc[1], index name
+<br>
+`iloc - index position`: df["age"].iloc[1:], index number
+<br>
+![loc_iloc](https://user-images.githubusercontent.com/40441643/216287157-33eea684-c603-4bde-a142-4b02ebe20032.PNG)
+<br>
+
+- `Dataframe Operations`
+<br>
+(1) Series Operation
+The operation is performed by the `index`. If there is no matching index, `NaN` is returned.
+<br>
+![series_operation](https://user-images.githubusercontent.com/40441643/216299727-7b6de8bb-12bf-454a-ad61-bb21b39b89e0.png)
+<br>
+<br>
+(2) Dataframe Operation
+<br>
+![dataframe_operation](https://user-images.githubusercontent.com/40441643/216300002-b34c16db-e5f4-4cb1-ac98-2dc22c29c8ad.PNG)
+<br>
+<br>
+(3) Series + Dataframe
+<br>
+![series+dataframe2](https://user-images.githubusercontent.com/40441643/216318548-b0944cac-a164-45dc-8288-67455723005b.PNG)
+<br>
+<br>
+![series+dataframe](https://user-images.githubusercontent.com/40441643/216298250-2bf87f61-6b72-4d2b-9a70-bcae1944a9d1.PNG)
+
+- `lambda`, `map`, `apply`
+<br>
+(1)`lambda` :The anonymous function method to represent the function by only one line.
+<br>
+lambda argument : expression
+
+```
+lambda x,y: x+ y
+
+f = lambda x,y: x+y
+f(1,4)
+
+5
+```
+
+```
+(lambda x: x+1)(5)
+
+6
+```
+<br>
+(2)`map function`: It receives a function and sequence data as **arguments**, applies the input function to each element, and returns it as a `list`.
+<br>
+It is generally represented the function as `lambda`.
+```
+map(function, sequence)
+
+ex = [1,2,3,4,5]
+f =lambda x: x**2
+list(map(f, ex))
+
+[1, 4, 9, 16, 25]
+```
+
+```
+f = lambda x, y: x + y
+list(map(f, ex, ex))
+
+[2, 6, 8, 10]
+
+list(map(lambda x: x+x ex))
+
+[2, 4, 6, 8, 10]
+```
+`map for series`: map function can be used for data of series type in Pandas.
+<br>
+Instead of function, dict and data of sequence type can be replaced.
+<br>
+![map](https://user-images.githubusercontent.com/40441643/216325480-a55b2e2b-469f-4011-89ed-eb5a1bef0976.PNG)
+<br>
+<br>
+![map_for_series](https://user-images.githubusercontent.com/40441643/216326200-dd54a560-97f1-4013-873a-f8dc5dde201d.PNG)
+<br>
+<br>
+![map_series](https://user-images.githubusercontent.com/40441643/216326529-b808accc-d344-4d64-afd2-dad67e4113ca.PNG)
+<br>
+`Sex string -> Sex code(integer)`
+<br>
+<br>
+`Replace function`: Among the functions of the Map function, only the **data conversion function** is in charge.
+<br>
+![replace](https://user-images.githubusercontent.com/40441643/216328424-6e030e4a-1af9-4326-b1ec-0658bfae5e68.png)
+<br>
+(3) `apply for dataframe`: Unlike map, apply the function to the entire series(column), input value is received as series data and handling is possible.
+<br>
+- Pandas Built-in functions
+<br>
+(1)`describe`: show the summary of numeric type data
+<br>
+(2)`unique`: return a list of unique values of series data.
