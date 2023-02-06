@@ -1,0 +1,97 @@
+---
+title: "What I learnt today 02/02/23"
+tags:
+  - WILT
+  - Python
+---
+💡 This post introduces what I learnt today 02/02/23.
+{: .notice--warning}
+- `Discrete Random variable` vs `Continuous Random Variable`
+<br>
+Random Variable is distinguished by the `discrete random variable` and `continuous random variable` according to the probability distribution `D`.
+<br>
+<br>
+A `Discrete Random Variable` models by adding the probability by **considering all the possible cases** of the random variable.
+<br>
+On the other hand, `Continuous Random Variable` models through the `differentiation` above the **density** of random variable defined in the data space. Since the density models the change of cumulative probability distribution, it can not be interpreted as the probability.
+<br>
+![continuous_random_variable](https://user-images.githubusercontent.com/40441643/216807353-86599207-42b6-4250-9f34-8a1dc3d09314.png)
+<br>
+<br>
+The `joint probability distribution P(x,y)` models `D` but we can not know the `D` in advance since it exists in Theoretically.
+<br>
+<br>
+`P(x)` does not give information regarding `y` as it is **marginal probability distribution** for input `x`. The `marginal probability distribution P(x)` can be derived from the `joint probability distribution P(x,y)`.
+<br>
+![px](https://user-images.githubusercontent.com/40441643/216808812-ec305732-c1cb-4374-97ac-56c6bba67db9.png)
+<br>
+<br>
+![px2](https://user-images.githubusercontent.com/40441643/216808813-3752679c-f318-44bb-bbf2-b21f93e283ac.PNG)
+- `Conditional probability and Machine Learning`
+<br>
+The `conditional probability distribution P(X|y)` models the **relationship between the input `x` and output `y`** in the data space. It shows the `probability distribution` of specific class.
+<br>
+<br>
+The `conditional probability distribution P(X|y)` means the **probability of the answer** that is `y` for the input variable `x`.
+<br>
+<br>
+The combination of `linear model` used in Logistic Regression and `softmax` function is used to **interpret the probability** based on the extracted **pattern** from data.
+<br>
+<br>
+In the `classification` problem, `softmax(Wϕ + b)` calculates the `conditional probability P(y|x)` through the **extracted pattern ϕ(x)** and **weight matrix W** from data `x`.
+<br>
+<br>
+In the `regression` problem, we estimate `conditional expectation E[y|x]`.
+<br>
+![condi_expec](https://user-images.githubusercontent.com/40441643/216821419-883be7b5-851e-40f1-b866-f74c69035698.PNG)
+<br>
+Deep Learning extracts the `pattern ϕ` from the data using **multi layer neural network**.
+`conditional expectation` is same as the function `f(x)` which **minimises E[y|x]2**.
+
+- What is `Expectation`?
+<br>
+If the probability distribution is given, we can calculate various `statistical function` which is used to **analyse the data**.
+<br>
+<br>
+At the same time, `expectation` is the **statistical quantity** to represent data and is used to calculate other statistical functions through the `probability distribution`.
+<br>
+![expectation](https://user-images.githubusercontent.com/40441643/216822092-dbbc34e3-0ec2-4045-922b-eb7b84ea1df9.png)
+<br>
+<br>
+Using the `expectation`, we can calculate the **Variance**, **Kurtosis**, **Covariance** and etc.
+<br>
+![example](https://user-images.githubusercontent.com/40441643/216822469-763a08e7-4f70-4f96-862c-95a7a3be8899.PNG)
+
+- `Monte Carlo Sampling`
+<br>
+Many problems in machine learning does not know the probability distribution explicitly.
+<br>
+<br>
+When we do not know the information for `probability distribution`, we have to use `Monte Carlo Sampling` method to **calculate the expectation** using data.
+<br>
+<br>
+Monte Carlo holds regardless of whether it is `discrete` or `continuous`.
+<br>
+![monte](https://user-images.githubusercontent.com/40441643/216825246-3597aac0-adcc-4701-a5a3-1da914572aa2.png)
+<br>
+If monte carlo sampling guarantees `independent extraction`, the **convergence** is guaranteed by the `law of large number`.
+
+```
+import numpy as np
+
+def mc_int(fun, low, high, sample_size = 100, repeat = 10)
+    int_len = np.abs(high-low)
+    stat = []
+    for _ in range(repeat):
+        x = np.random.uniform(low=low, high=high, size=sample_size)
+        fun_x = fun(x)
+        int_val = int_len * np.mean(fun_x)
+        stat.append(int_val)
+    return np.mean(stat), np.std(stat)
+
+def f_x(x):
+    return np.exp(-x**2)
+print(mc_int(f_x, low = -1, high = 1, sample_size=10000, repeat = 100))
+
+(1.49387, 0.0039)
+```
