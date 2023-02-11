@@ -6,13 +6,12 @@ tags:
 💡 This post introduces the research for the project "A Dish Recommendation System".
 {: .notice--warning}
 # A Dish Recommendation System
-The aim of this project is to recommend new dishes that suits your taste that **you have not had before** by automatically analysing the dishes you had. This recommendation algorithm is so robust that many people find their `all-time favourite dish`.
+The aim of this project is to recommend new dishes that suits your taste that **you have not had before** by automatically analysing the dishes you had. This recommendation algorithm is so robust that many people find their `all-time favourite dish`. In other words, I'd like to make the `spotify` of a dish recommendation version.
 
 ## A Dish Recommendation System vs A Restaurant Recommendation
 To **specify the individual taste**, the range of what we want to recommend for you is reduced such as not considering the whole menu in the restaurant. For example, even though the restaurants normally have the most popular menu or friends recommend you their best menu after they tried the restaurant, you may be much satisfied with what you just chose randomly by your taste than the recommend menu by others. This happens because people have different taste.
 
 ## The algorithm
-(1) `Collaborative Filtering` consists of collecting and analysing users’ behaviours. It is used as a way to **predict users' preferences**. The underlying idea is that people who have similar dish likely have similar tastes. Conversely, if the same group of like-minded people like two different dishes, they are probably similar. This information can be leveraged to suggest dishes you have never had before.
 <br>
 <br>
 e.g. `Netflix`: taking users' **star-based movie ratings** to inform its understanding of which movies to recommend to other similar users.
@@ -57,8 +56,7 @@ Then, much like in `collaborative filtering`, the NLP model uses these terms and
 Convolutional Neural Networks have mainly been used with visual data. As a result, data scientists have successfully applied them to `image detection`. This is achieved by feeding a dataset of images to the network, `pixel by pixel`, to **train the model**. Once trained, the algorithm is capable of **classifying different objects** that appear in images that are new to the network.
 <br>
 <br>
- This particular neural network has four `convolutional layers`, seen as the thick bars on the left, and three dense layers, seen as the more narrow bars on the right.
-
+This particular neural network has four `convolutional layers`, seen as the thick bars on the left, and three dense layers, seen as the more narrow bars on the right.
 
 ## Similarity vs Diversity
 All recommendation systems struggle with the same uphill task. They are supposed to suggest dish that people will like, but at the same time, is somewhat **outside of their tasty bubble**. In order to be effective, a `discovery engine` should strike a harmony between two opposite forces: `similarity and diversity`.
@@ -76,8 +74,23 @@ It is good remind that the simple truth is that different people have **differen
 We can think of `high similarity` and `high diversity` as the two ends of a continuous spectrum. Some people love the familiarity of their **preferred sub-genre** and getting more of the same. Although it’s likely that the majority of people may have a more balanced approach, wanting to **explore new dish** that’s still somewhat-related to what they like. A minority of `adventurers` are happy to freely roam between far-removed kinds, as long as the tasty experience is constantly fresh and rewarding.
 <br>
 <br>
-We could ask their users to **customise the discovery engine** in order to respond to their `recommendation needs`. If I want to live in my `bubble` of creamy pasta, I can, by telling the algorithm to **suggest highly similar dish** until I exhaust the catalogue. If I feel more `explorative`, I could move the slider towards the `diversity end`. This custom approach could ensure all users are happy with the dish suggested. Each to their tasty own. 
-## History of recommendation system
+We could ask their users to **customise the discovery engine** in order to respond to their `recommendation needs`. If I want to live in my `bubble` of creamy pasta, I can, by telling the algorithm to **suggest highly similar dish** until I exhaust the catalogue. If I feel more `explorative`, I could move the slider towards the `diversity end`. This custom approach could ensure all users are happy with the dish suggested. Each to their tasty own.
+
+## History of Online Music Curation
+(1) A team of "music experts" or human curators create their own list
+<br>
+:based on that specific curator's choices -> not satisfy each listener's individual music taste
+<br>
+<br>
+(2) Manually **tagging attributes** of songs
+<br>
+:simply filter for certain tags to make playlists of similar-sounding music
+<br>
+<br>
+(3) Analyse the audio and textual content of music
+<br>
+:allowing it to perform music identification, personalised recommendation, playlist creation, and analysis.
+
 
 ## The functions
-In addition, since one of the biggest advantages in terms of having a meal is the cost, the option function of cost should be available. For example, there are times when you wan to have a delicious meal without considering the price of the food. Like special days.
+In addition, since one of the biggest advantages in terms of having a meal is the cost, the option function of `cost` should be available. For example, there are times when you wan to have a delicious meal without considering the price of the food. Like special days.
