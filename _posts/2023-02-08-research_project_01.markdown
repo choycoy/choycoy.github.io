@@ -12,8 +12,6 @@ The aim of this project is to recommend new dishes that suits your taste that **
 To **specify the individual taste**, the range of what we want to recommend for you is reduced such as not considering the whole menu in the restaurant. For example, even though the restaurants normally have the most popular menu or friends recommend you their best menu after they tried the restaurant, you may be much satisfied with what you just chose randomly by your taste than the recommend menu by others. This happens because people have different taste.
 
 ## The algorithm
-<br>
-<br>
 e.g. `Netflix`: taking users' **star-based movie ratings** to inform its understanding of which movies to recommend to other similar users.
 <br>
 `Spotify`: does not have a star-based system, `implicit feedback`, stream counts of the tracks, whether a user saved the track to their own playlist, or visited the artist's page after listening to a song.
