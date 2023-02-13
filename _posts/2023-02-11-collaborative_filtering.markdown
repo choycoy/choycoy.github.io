@@ -25,7 +25,7 @@ Let's define the above table as a `dictionary`. Key is the watcher and value is 
 >> ratings={
     'Joe':{'About Time':5, 'Mother':4,'Us and Them':1.5},
     'choycoy':{'About Time':2.5, 'Mother':2, 'Us and Them':1},
-    'Kate':{'Mother':5,'boss baby':2}
+    'Kate':{'Mother':5,'Us and Them':2},
     'Eden':{'About Time':3.5,'Mother':4,'Us and Them':5}
 }
 ```
@@ -43,7 +43,7 @@ Let's define the above table as a `dictionary`. Key is the watcher and value is 
 
 5
 ```
-## Find the distance between two people through the Pythagoras theorem in 2d
+## 1. Find the distance between two people through the Pythagoras theorem in 2d
 The basic way to find the **similarity** between two people is to find out the **distance** after plotting the dots on the 2d graph.
 <br>
 <br>
@@ -67,7 +67,7 @@ Let's calculate the rating distance between the Eden's and Kate's Mother and Us 
 >> var2 = ratings['Kate']['Mother']- ratings['Eden']['Mother']
 >> sim(var1, var2)
 ```
-## Find the distance more than two people through the Pythagoras theorem in 2d
+## 2. Find the distance more than two people through the Pythagoras theorem in 2d
 Let's find out the distance between the whole people through the ratings of Mother and Us and Them in terms of Kate.
 <br>
 <br>
@@ -86,7 +86,7 @@ Eden : 3.1622776601683795
 <br>
 Sine the distance is resulted by the Pythagoras theorem, the **less the distance** is, the **more similar** the structure is. Thus, we can guess that Kate has the most similar taste with Joe since the its value is the smallest.
 
-## Normalisation for comparison
+## 3. Normalisation for comparison
 Inversely, using `Normalisation`, the **larger the value**, the **more similar** it will be changed. If we use the existing formula, the distance can increase infinitely according to our taste, but through `Normalisation`, the range of variable is set constant between `0 and 1`, so it is easy to compare and has the effect of confining it within a specific range.
 <br>
 <br>
@@ -97,7 +97,7 @@ The formula of normalisation is as follows:
 ```
 >> for i in ratings:
     if i!='Kate':
-        num1 = ratings.get('Kate').get('Mother')- critics.get(i).get('Mother')
+        num1 = ratings.get('Kate').get('Mother')- ratings.get(i).get('Mother')
         num2 = ratings.get('Kate').get('Us and Them')- ratings.get(i).get('Us and Them')
         print(i," : ", 1/(1+sim(num1,num2))) #정규화
 
@@ -105,3 +105,137 @@ Joe : 0.4721359549995794
 choycoy : 0.2402530733520421
 Eden : 0.2402530733520421
 ```
+By changing the output expression, we can see it more clarified in terms of the `similarity`. However, so far, we have found the person who has the most similarity between **2 items** and it is the limit of the `Pythagoras Theorem`.
+<br>
+<br>
+So **more than 3 items**, in other words, we can find out the similarity by the distance on **multi-dimensional space**.
+<br>
+<br>
+The formulas to find the distance on multi-dimensional space are:
+<br>
+- Euclidean distance
+<br>
+- City-book(Manhattan) distance
+<br>
+- Minkowski distance
+<br>
+- Cosine distance
+<br>
+- Jaccard's distance
+
+## Euclidean Distance Formula
+The basic structure is similar to the `Pythagoras Theorem`. This is a method in which all the squares of `(xi-yi)`, the value of the `ith item` to be compared, are calculated, added and then the square root is taken.
+<br>
+![euclidean](https://user-images.githubusercontent.com/40441643/218368116-414e0389-bb26-40c3-8053-a16c13d5f148.PNG)
+<br>
+<br>
+Then we can find the `distance` even though the number of common movies is **more than 2** through the `Euclidean Distance Formula`.
+<br>
+![euclidean3](https://user-images.githubusercontent.com/40441643/218370703-b8ea0ecd-ce73-4bab-9f08-f8bd9cccd3e8.PNG)
+
+## 1. Find the distance between two people on the multi-dimension using the Euclidean Distance Formula
+Frist, define the above formula as the function `sim(data, name1, name2)`. And the data is above `ratings` dictionary and `name1`and `name2` will be compared.
+<br>
+<br>
+Since ratings is a double dictionary structure, if the **for loop** runs in `ratings[name]`, {'About Time':5, 'Mother':4, 'Us and Them':1.5}, which is a `value` that exists in the dictionary, comes out, where again, the rating can be retrieved using the `movie name`, which is the **key**.
+<br>
+```
+>> def sim_distance(data, name1, name2):
+    sum = 0
+    for i in data[name1]:
+        if i in data[name2]: // if they watch same movie
+          sum += pow(data[name1][i]- data[name2][i], 2)
+
+    return 1/(1+sqrt(sum))
+```
+We can get the **value** by `[key] or get(key)`.
+<br>
+<br>
+If we calculate the similarity between Kate and Eden using the above function:
+```
+>> sim_distance(ratings, 'Kate', 'Eden')
+
+0.2402530733520421
+```
+Therefore, we can find the similarity between two people with whatever the number of items is.
+
+## 2. Find the person whose distance is the most close in the whole data using above the sim_distance function
+Now we can find the similarity between two people, we go one step further and go through the `whole dictionary` to find the person with the **most similarity**.
+<br>
+<br>
+`match(data, name, index, sim_function)`
+<br>
+-data is **dictionary**
+<br>
+-name is the person who will be **standard**
+<br>
+-index is how many indexes to **print**
+<br>
+-sim_function will be sim_distance implemented above.
+<br>
+<br>
+The progress of operating function is as follows:
+1. run the for loop as the number of people in data.
+<br>
+2. add the `tuple (similarity, name)` to the list and print it as the form of [(score,name),(score,name)...].
+<br>
+3. After sorting the list in the `descending order`, index as many as the index number given as a `parameter` and return it.
+
+```
+def match(data, name, index = 3, sim_function = sim_distance):
+    list = []
+    for i in data:
+        if name != i:
+            list.append((sim_function(data,name,i),i))
+    list.sort()
+    list.reverse()
+
+    return list[:index]
+```
+
+```
+>> match(ratings, 'Kate')
+
+[(0.4721359549995794, 'Joe'),
+ (0.2402530733520421, 'choycoy'),
+ (0.2402530733520421, 'Eden')]
+ ```
+By the function `match`, we can compare the several items at once and find out that the distance between Kate and Joe is the most close.
+
+## 3. Visualisation by the BARPLOT
+To plot the graph after importing `matplotlib.pyplot`, define the function `barchart(data, labels)` to plot. The `x axis` is the **similarity** and the `y axis` is the name of row bar plot.
+ <br>
+ <br>
+ The parameter of data is the list of scores and labels is the list of names.
+ ```
+ >> import matplotlib.pyplot as plt
+ >> def barchart(data, labels):
+        positions = range(len(data))
+        plt.barh(positions, data, height = 0.5, color ='r')
+        plt.yticks(positions, labels)
+        plt.xlabel('Similarity')
+        plt.ylabel('Name')
+        plt.show
+```
+We define the function so let's find the data(score) and label(name) which will be assigned in the parameter.
+<br>
+<br>
+First, we have a list got from the function `match` and split them as score and name through **for loop**.
+```
+score = []
+names = []
+list = match(ratings, 'Kate')
+for i in list:
+    score.append(i[0])
+    names.append(i[1])
+
+>> score
+[0.4721359549995794, 0.2402530733520421, 0.2402530733520421]
+>> names
+['Joe', 'choycoy', 'Eden']
+```
+
+```
+>> barchart(score,names)
+```
+![barchart](https://user-images.githubusercontent.com/40441643/218395515-ac75277c-7d42-46f0-965c-c347eb8c255f.png)
