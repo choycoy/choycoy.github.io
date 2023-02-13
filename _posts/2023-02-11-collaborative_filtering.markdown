@@ -3,7 +3,7 @@ title: "Collaborative Filtering"
 tags:
   - Research
 ---
-💡 This post introduces what I learnt today 03/02/23.
+💡 This post introduces the collaborative filtering.
 {: .notice--warning}
 #  Collaborative filtering
 It is a method of automatically **predicting the interest of users** according to the taste information obtained from many users and is used by Netflix and Watcha, and used in algorithms such a s obtaining the `similarity` between two people, obtaining an `expected rating`, and `recommending similar movies`. i.e. It recommends me the use of the user who has a similar taste when **I** is the determination standard.
