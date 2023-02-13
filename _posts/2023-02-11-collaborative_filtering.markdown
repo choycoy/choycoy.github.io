@@ -239,3 +239,253 @@ for i in list:
 >> barchart(score,names)
 ```
 ![barchart](https://user-images.githubusercontent.com/40441643/218395515-ac75277c-7d42-46f0-965c-c347eb8c255f.png)
+
+## Correlation Analysis
+However, we have a limitation for the similarity measurement using the `Euclidean Distance Formula`. The result cannot be calculated accurately if the `rating of specific person` is **too low or too high**.
+<br>
+<br>
+For example, suppose that I have a unique standard for rating movies and if I am satisfied with the movie, I rate `5`, or else I rate `0`, which makes the whole data ambiguous. Therefore, to solve this problem, we use `Correlation Analysis`.
+<br>
+<br>
+`Correlation Analysis` is the analysis regarding the **linear relationship** between two variables. In other words, after plotting the dots according to the relationship between the scores, we can analyse the **correlation relationship** by the **shape of dot's distribution**. As shown in the figure below, for two variables `x` and `y`, if **x changes and y changes**, x and y are said to be `correlated`.
+<br>
+![correlation](https://user-images.githubusercontent.com/40441643/218405746-95b87296-b959-4637-a8bf-0dd3a7c5f4ce.png)
+
+### 1. Data Definition
+Let's define new data dictionary `ratings`, which is larger than before and the number of movies is bigger and the number of movies which are not common is different.
+```
+ratings = {
+    'choycoy': {
+        'Catch me if you can': 2.5,
+        'The Pianist': 3.5,
+        'The Truman Show': 3.0,
+        'Last Letter': 3.5,
+        'Five Feet Apart': 2.5,
+        'Chungking Express': 3.0,
+    },
+    'Robert': {
+        'Catch me if you can': 1.0,
+        'The Pianist': 4.5,
+        'The Truman Show': 0.5,
+        'Last Letter': 1.5,
+        'Five Feet Apart': 4.5,
+        'Chungking Express': 5.0,
+    },
+    'Anne': {
+        'Catch me if you can': 3.0,
+        'The Pianist': 3.5,
+        'The Truman Show': 1.5,
+        'Last Letter': 5.0,
+        'Chungking Express': 3.0,
+        'Five Feet Apart': 3.5,
+    },
+    'Andy': {
+        'Catch me if you can': 2.5,
+        'The Pianist': 3.0,
+        'Last Letter': 3.5,
+        'Chungking Express': 4.0,
+    },
+    'Emily': {
+        'The Pianist': 3.5,
+        'The Truman Show': 3.0,
+        'Chungking Express': 4.5,
+        'Last Letter': 4.0,
+        'Five Feet Apart': 2.5,
+    },
+    'Sam': {
+        'Catch me if you can': 3.0,
+        'The Pianist': 4.0,
+        'The Truman Show': 2.0,
+        'Last Letter': 3.0,
+        'Chungking Express': 3.5,
+        'Five Feet Apart': 2.0,
+    },
+    'Marcus': {
+        'Whiplash': 3.0,
+        'The Pianist': 4.0,
+        'Chungking Express': 3.0,
+        'Last Letter': 5.0,
+        'Five Feet Apart': 3.5,
+    },
+    'Angela': {'The Pianist': 4.5, 'Five Feet Apart': 1.0,
+             'Last Letter': 4.0},
+}
+```
+### 2. Scatter Plot
+Before Correlation Analysis, let's do `scatter plot` which will be used for analysis. Let's define the function `drawGraph` to scatter plot using the data in `ratings`.
+```
+def drawGraph(data, name1, name2):
+    plt.figure(figsize=(14,8))
+
+    list1 = []
+    list2 = []
+
+    for i in ratings[name1]:
+        if i in data[name2]:
+            list1.append(ratings[name1][i])
+            list2.append(ratings[name2][i])
+            plt.text(ratings[name1][i], ratings[name2][i],i)
+
+    plt.plot(list1, list2,'ro')
+
+    plt.axis([0,6,0,6])
+
+    plt.xlabel(name1)
+    plt.ylabel(name2)
+
+    plt.show()
+```
+```
+>> drawGraph(ratings, 'Robert', 'Sam')
+```
+
+![robertandsam](https://user-images.githubusercontent.com/40441643/218417870-c7b0b759-0175-4f85-8e49-718074d5fc36.png)
+```
+>> drawGraph(ratings, 'Marcus', 'choycoy')
+```
+
+![marcusandchoycoy](https://user-images.githubusercontent.com/40441643/218417873-736c5e05-fa1c-48f1-a63b-b7f7db612afc.png)
+<br>
+As you can see, the **more scatter** the plotting are, the **less similar** the movie taste between two people is.
+
+### 3. Find the Correlation Coefficient between two people
+In order to find the correlation Coefficient by the above scatter plot, we will use the `Pearson Correlation Coefficient` Formula. The `Pearson Correlation Coefficient` results in between `-1 and 1` and the closer to the `1` is the **positive correlation**, the closer to `-1` is the **negative correlation**.
+<br>
+<br>
+The formula of it is:
+<br>
+![pearson_correlation_coefficient](https://user-images.githubusercontent.com/40441643/218414810-9f95ccfd-cea1-4263-b4b4-636edad8be2d.PNG)
+<br>
+<br>
+As the above formula, let's define the function to find the **Pearson Correlation Coefficient**, `sim_pearson(data, name1, name2)`. The value of `x` will be the rating of name1 and the value of `y` will be the rating of name2. And the `n` is the number of movies and the variable `count` will be added by 1 if they rate same movie.
+```
+def sim_pearson(data, name1, name2):
+    sumX = 0
+    sumY = 0
+    sumPowX = 0
+    sumPowY = 0
+    sumXY = 0
+    count = 0
+
+    for i in data[name1]:
+        if i in data[name2]:
+            sumX += data[name1][i]
+            sumY += data[name2][i]
+            sumPowX += pow(data[name1][i],2)
+            sumPowY += pow(data[name2][i],2)
+            sumXY += data[name1][i]*data[name2][i]
+            count += 1
+
+    return (sumXY - ((sumX*sumY)/count))/sqrt((sumPowX-(pow(sumX, 2)/count))*(sumPowY-(pow(sumY, 2)/count)))
+```
+
+```
+>> sim_pearson(ratings, 'Robert', 'Sam')
+0.22271770159368715
+```
+
+```
+>> sim_pearson(ratings, 'Marcus', 'choycoy')
+0.6625413488689132
+```
+In the result, the similarity of Marcus and choycoy's movie taste is higher than Robert and Sam's as same as the above scatter plotting.
+
+### 4. Find the Correlation Coefficient with the whole people
+So far we have completed the function to find the correlation coefficient between two people so let's go around the entire data and get the correlation coefficient between the person who will be standard and the rest people at once.
+<br>
+<br>
+We will use the function `match(data, name, index, sim_function)`.
+```
+def match(data, name, index = 2, sim_function = sim_pearson):
+    list = []
+    for i in data:
+        if name != i:
+            list.append((sim_function(data,name,i),i))
+    list.sort()
+    list.reverse()
+
+    return list[:index]
+```
+
+```
+>> match(ratings, 'choycoy', 6)
+
+[(0.9912407071619299, 'Angela'),
+ (0.6625413488689132, 'Marcus'),
+ (0.5669467095138396, 'Emily'),
+ (0.40451991747794525, 'Andy'),
+ (0.39605901719066977, 'Anne'),
+ (0.31180478223116265, 'Sam')]
+```
+ choycoy and Angela has the correlation coefficient `0.99`, which means their movie taste is **almost same**.
+
+### 5. Predict the rating of movie and recommend the movie
+The `correlation` is calculated by the rated movies commonly, however, the movie recommendation should be the movie which **has not ever rated before** by the future watcher.
+<br>
+<br>
+Also, it is now what we want to recommend a movie based on only one person with the **highest correlation** and get the **expected rating**. It is based on the `similarity value`, but anyone who meets a certain standard can be used as a **reference** for obtaining `expected ratings` and `recommended movies`.
+<br>
+<br>
+The final process is as follows:
+1. Obtain an estimated rating(`similarity x (other) movie rating`) through the movie ratings and similarities of everyone except the target. For example, if choycoy gave "Catch me if you can" 2.5 points, Angela has a 99% score with choycoy. It will be assumed that Angela will give 2.47 because of the 99% similarity.
+<br>
+2. Calculate **the sum of estimated ratings**.
+<br>
+3. We can calculate the `expected rating` based on everyone through **the sum of estimated ratings/the sum of similarities**.
+<br>
+4. It would be possible to find all of the movies that have not seen this expected value and recommend the movie with the **highest expected rating** among the movies that have not yet been seen.
+<br>
+<br>
+Then, let's define the function to calculate `the expected rating`. The name of function is `getRecommendation()`. The values required to go through the above process are the `data`, `the standard person(target)`, and the `correlation coefficient` with others.
+<br>
+`getRecommendation(data, person, sim_function)`
+<br>
+<br>
+Among the data to be used in the function, it is necessary to extract the **correlation coefficient** in advance through the function `match()` defined above. The resulting value is a `list`, and each data will be made in the form of a `tuple(expected rating, movie title)`.
+<br>
+<br>
+In fact, in the process of recommending a movie, if the `correlation` is **negative**, it is not worth considering. Rather, it can be expected to **reduce the accuracy**, so it is excluded through the condition.
+
+```
+def getRecommendation(data, person, sim_function= sim_pearson):
+    result = match(ratings, person, len(data))
+
+    similarity_sum = 0
+    score = 0
+    list = []
+    score_dict = {}
+    similarity_dict = {}
+
+    for sim, name in result:
+        if sim <0 : continue
+        for movie in data[name]:
+            if movie not in data[person]:
+                score += sim*data[name][movie]
+                score_dict.setdefault(movie, 0)
+                score_dict[movie] += score
+
+                similarity_dict.setdefault(movie,0)
+                similarity_dict[movie] +=  sim
+
+            score = 0
+
+
+    for key in score_dict:
+        score_dict[key] = score_dict[key]/similarity_dict[key]
+        list.append((score_dict[key],key))
+    list.sort()
+    list.reverse()
+
+    return list
+```
+
+```
+>> getRecommendation(ratings, 'Angela')
+
+[(4.0, 'The Pianist'),
+ (3.4683708086162053, 'Chungking Express'),
+ (3.0, 'Whiplash'),
+ (2.79109671589425, 'Catch me if you can'),
+ (2.5187013214845226, 'The Truman Show')]
+```
+In the result, I would recommend "The Pianist" to Angela.
