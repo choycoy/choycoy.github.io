@@ -81,7 +81,7 @@ data_view
 ```
 # movie, user, rating count
 # isnull() = get the unique vale
-movie_count = user_ata.isnull().sum()[1] # including the sum of missing values
+movie_count = user_data.isnull().sum()[1] # including the sum of missing values
 
 # nunique(): the number of unique values (not including the missing value)
 user_count = user_data['user_id'].nunique() - movie_count
@@ -101,4 +101,64 @@ for i in range(1,6):
 ```
 ![dis](https://user-images.githubusercontent.com/40441643/218756838-69cb72b4-7a09-4d03-8d6a-50cf29adebc7.png)
 <br>
-Therefore, we can see the distribution of ratings between 1 and 5.
+Therefore, we can see the distribution of ratings between `1 and 5`.
+<br>
+<br>
+The `iloc` function in python is one of the functions defined in the **Pandas** module that helps us to **select a specific row or column** from the data set. Using the `iloc` function in python, we can easily retrieve any particular value from a row or column using index values.
+
+### 5. Preprocessing data
+**5-1. Remove the missing data**
+```
+data_nan = pd.DataFrame(pd.isnull(user_data.Rating))
+data_nan = data_nan[data_nan['Rating']==True]
+data_nan = data_nan.reset_index()
+print(data_nan)
+```
+![data_nan](https://user-images.githubusercontent.com/40441643/218936946-9088c99f-0520-4946-b4ed-ac0c1f25b4ef.PNG)
+<br>
+<br>
+**5-2. Make a new numpy array**
+```
+movie_np = []
+movie_id = 1
+
+for i,j in zip(data_nan['index'][1:], data_nan['index'][:-1]):
+    temp = np.full((1, i-j-1), movie_id)
+    movie_np = np.append(movie_np, temp)
+    movie_id += 1
+```
+`temp = np.full((1, i-j-1), movie_id)`
+<br>
+-> first for loop i = 548, j = 0 -> assign movie_id **1** from `0 to 548`.
+<br>
+-> second for loop i = 694, j = 548 -> assign movie id **2** from `549 to 694`.
+<br>
+-> iterate until the **movie_id(1~4498)**
+<br>
+-> `1D [1,1,...,2,2...,4498]`
+<br>
+-> length: created the one dimensional data of length **24053336**
+
+```
+record = np.full((1, len(user_data) - data_nan.iloc[-1, 0]-1), movie_id)
+movie_np = np.append(movie_np, record)
+
+print('Movie numpy : {}'.format(movie_np))
+print('Length : {}'.format(len(movie_np)))
+```
+
+`np.full((1,len(user_data1) - data_nan.iloc[-1, 0] - 1), movie_id)`
+<br>
+:(1,len(user_data1) - data_nan.iloc[-1, 0] - 1) = 24057835 - 24053336 -1 = **428**.
+<br>
+<br>
+`len(user_Data)` is the total length of raw data, `data_nan.iloc[-1,0]` is the first line **(:4499)** of movie_id 4499 in the data_nan and `-1` is to remove `:4499`. Therefore, `428` is the **number of movie_id 4499's rating data**.
+<br>
+![table](https://user-images.githubusercontent.com/40441643/218946412-944b9b0b-8f29-4321-8af0-f6e0266bcf40.PNG)
+<br>
+<br>
+**5-3. Preprocessing data valid value**
+<br>
+1. remove the movie whose number of rating is too less.
+<br>
+2. remove the customer who gives review too less.
