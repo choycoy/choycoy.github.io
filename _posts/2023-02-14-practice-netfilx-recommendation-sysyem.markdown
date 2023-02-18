@@ -162,3 +162,48 @@ print('Length : {}'.format(len(movie_np)))
 1. remove the movie whose number of rating is too less.
 <br>
 2. remove the customer who gives review too less.
+
+```
+number = ['count', 'mean']
+
+# get the least valid value of movie
+movie_summary = df3.groupby('movie_id')['Rating'].agg(number)
+movie_summary.index = movie_summary.index.map(str)
+
+# quantile
+movie_mark = round(movie_summary['count'].quantile(0.9),0)
+remove_movie_list = movie_summary[movie_summary['count'] < movie_mark].index
+
+print('Movies minimum times of review: {}'.format(movie_mark))
+
+
+#get the least valid value of user
+user_summary = df3.groupby('user_id')['Rating'].agg(number)
+user_summary.index = user_summary.index.map(str)
+
+
+user_mark = round(user_summary['count'].quantile(0.9),0)
+remove_user_list = user_summary[user_summary['count'] < user_mark].index
+
+print('Users minimum times of review: {}'.format(user_mark))
+
+
+# remove data
+# ~df3 = is not in(complement set)
+print('Original Shape: {}'.format(df3.shape))
+df3 = df3[~df3['movie_id'].isin(remove_movie_list)]
+df3 = df3[~df3['user_id'].isin(remove_user_list)]
+print('After Trim Shape: {}'.format(df3.shape))
+df3.head(5)
+```
+
+```
+Movies minimum times of review: 11423.0
+Users minimum times of review: 131.0
+Original Shape: (24058263, 3)
+After Trim Shape: (10581310, 3)
+```
+![after_Trim](https://user-images.githubusercontent.com/40441643/219842558-e3284da1-cb9d-4de4-8a13-f41ff76aea19.PNG)
+<br>
+<br>
+I **preprocessed the data** from `24058263 to 10581310` by filtering the user and movie which satisfies the above condition.
