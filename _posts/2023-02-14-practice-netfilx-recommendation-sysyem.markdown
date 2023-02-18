@@ -207,3 +207,18 @@ After Trim Shape: (10581310, 3)
 <br>
 <br>
 I **preprocessed the data** from `24058263 to 10581310` by filtering the user and movie which satisfies the above condition.
+
+### 6. PivotTable Definition
+```
+df3_pivot = pd.pivot_table(df3, values = 'Rating', index = 'movie_id', columns ='user_id')
+df3_pivot
+```
+![pivot_table](https://user-images.githubusercontent.com/40441643/219867695-48b236b2-c946-409e-9daf-50d0e9eed97c.PNG)
+
+### 7. Load the movie title data(movie_titles.csv)
+```
+movie_title = pd.read_csv(r'C:\archive\movie_titles.csv',encoding='ISO-8859-1', header = None, names = ['movie_id', 'year', 'name'], usecols = [0,1,2])
+movie_title.set_index('movie_id', inplace = True)
+print(movie_title.head(10))
+```
+![movie_title_data](https://user-images.githubusercontent.com/40441643/219867856-205da6be-04bd-4d08-839e-7adb73d841f9.PNG)
