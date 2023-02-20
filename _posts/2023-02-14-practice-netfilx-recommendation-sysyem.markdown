@@ -215,10 +215,109 @@ df3_pivot
 ```
 ![pivot_table](https://user-images.githubusercontent.com/40441643/219867695-48b236b2-c946-409e-9daf-50d0e9eed97c.PNG)
 
-### 7. Load the movie title data(movie_titles.csv)
+### 7. Loading the movie title data(movie_titles.csv)
 ```
 movie_title = pd.read_csv(r'C:\archive\movie_titles.csv',encoding='ISO-8859-1', header = None, names = ['movie_id', 'year', 'name'], usecols = [0,1,2])
 movie_title.set_index('movie_id', inplace = True)
 print(movie_title.head(10))
 ```
-![movie_title_data](https://user-images.githubusercontent.com/40441643/219867856-205da6be-04bd-4d08-839e-7adb73d841f9.PNG)
+![movie_title_data](https://user-images.githubusercontent.com/40441643/219867856-205da6be-04bd-4d08-839e-7adb73d841f9.PNG
+
+### 8. Loading 100000 data, Singular Value Decomposition and Cross-Validation
+```
+reader = Reader()
+
+reduced_data = Dataset.load_From_df(df3[['user_id', 'movie_id, 'Rating']][:100000], reader)
+```
+By loading 100000 of 24058263, we can calculate the operation efficiently.
+<br>
+<br>
+`surprise Reader()` preprocesses the data in the order of **user, item, rating and timestamp**.
+
+```
+algo = SVD()
+cross_validate(algo, m_data, measures=['RMSE', 'MSE'], cv=5, verbose=True)
+```
+`RMSE(Root Mean Squared Error)` is the square root of MSE and `MSE(Mean Squared Error)` of an estimator measures the **average of the squares of the errors**, that is the **average squared** difference between `estimated values` and the `actual value`.
+<br>
+<br>
+`SVD(Singular Value Decomposition)`: simply **decomposes** an  t x d matrix called A into three matrices called U, Σ and Vt as show in the figure below.
+<br>
+![svd](https://user-images.githubusercontent.com/40441643/220009269-0e364259-8d40-4586-b6a9-af8b57045350.PNG)
+<br>
+<br>
+`cross_validate` is obtained by dividing **SVD()** and m_data(100k data) into **5** pieces of data and cross-validating the `RMSE` and `MSE` values. By splitting the data to 5 pieces, RMSE and MSE are calculated per fold.
+
+### 9. Training the data set by SVD
+```
+user_svd = movie_title.copy()
+user_svd = user_svd.reset_index()
+user_svd = user_svd[~user_svd['movie_id'].isin(remove_movie_list)]
+
+user_data = Dataset.load_from_df(df3[['user_id','movie_id','Rating']], reader)
+trainset = user_data.build_full_trainset()
+algo.fit(trainset)
+```
+The movie title is copied in the user_svd and is deleted according to the quantile value of **0.9** as with the existing data. The data is preprocessed as the form of `reader()` function with `Dataset.load_from_df` and the whole data can be used as **learning data** by `build_full_trainset()`. And then the trainset is trained by `SVD()`.
+
+```
+algo.predict(user_id, movie_id)
+```
+
+```
+algo.predict(561, 121)
+
+Prediction(uid=561, iid=121, r_ui=None, est=3.2952893773452168, details={'was_impossible': False})
+```
+
+```
+algo.predict(5, 4562)
+
+Prediction(uid=5, iid=4562, r_ui=None, est=3.5011076133295407, details={'was_impossible': False})
+```
+Using the SVD algorithm `algo` trained, we can calculate the **predicted data** if the user_id and movie_id is entered to the function `predict()`.
+
+```
+uid(user_id), iid(movie_id = item_id), r_ui(read_user_rating), est(predict_rating)
+```
+
+### 10. Create the function of movie recommendation
+Using `Pearson Correlation Coefficient`, the recommendation function is created.
+```
+def recommend(title, min_count): # movie_title = title, min_count
+    print("For movie ({})".format(title))
+    print("- Top 10 movies recommended based on Pearsons'R correlation - ")
+
+    i = int(movie_title.index[movie_title['name'] == title][0])
+    target = df3_pivot[i]
+    similar_to_target = df3_pivot.corrwith(target)
+    corr_target = pd.DataFrame(similar_to_target, columns = ['PearsonR'])
+    corr_target.dropna(inplace = True)
+    corr_target = corr_target.sort_values('PearsonR', ascending = False)
+
+    corr_target.index = corr_target.index.map(int)
+    corr_target = corr_target.join(movie_title)[['PearsonR', 'name']]
+    np.seterr(divide='ignore', invalid ='ignore')
+
+    print(corr_target[corr_target['PearsonR']>min_count][1:11].to_string(index=False))
+```
+
+`title` which is the parameter of recommend function should be correct with `name` in the movie_title.csv file.
+<br>
+<br>
+And change the index value confirmed to integer value and load the information of pivot_table(user_id, movie_id, rating) by the **index**.
+<br>
+<br>
+`df_pivot.corrwith()` is the function of **Pearson Correlation Coefficient** of target movie and other movies in the pivot table.
+<br>
+<br>
+`Sort` the correlation coefficient in **descending** order and recommend the movies which have the **most similarity** with target movie.
+
+```
+recommend("X2: X-Men United", 0)
+```
+![recommend](https://user-images.githubusercontent.com/40441643/220058832-c098c4d0-f25a-4034-a210-cc4d9381bb04.PNG)
+```
+recommend("Mother's Day", 0)
+```
+![recommend1](https://user-images.githubusercontent.com/40441643/220059001-a80919f4-bf91-4334-b41a-6e73ecc32121.PNG)
