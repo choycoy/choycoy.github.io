@@ -150,6 +150,10 @@ For the validation of data, the **user** whose `rating number` is less than **30
 The number of users and anime which are filtered is **7449233**.
 <br>
 ![rating_filtered](https://user-images.githubusercontent.com/40441643/220331609-3e559bb0-144a-435f-9e89-9b6d6c54c3d5.PNG)
+```
+rating = rating[rating['anime_id'].isin(popular_anime)]
+rating = rating[rating['user_id'].isin(ratings_users)]
+```
 
 ### 4. Create pivot table
 ```
