@@ -162,3 +162,36 @@ rating_matrix =rating.pivot_table(index= 'user_id', columns='anime_id', values='
 rating_matrix = rating_matrix.fillna(0)
 ```
 ![pivot_table2](https://user-images.githubusercontent.com/40441643/220332025-2a9f9f3d-a4fb-4084-9d81-5ee9f4260b33.PNG)
+<br>
+<br>
+`fillna()`: replaces the **null values** with a specified value.
+
+### 5. Find the user who has similar taste - Cosine Similarity
+`Cosine Similarity`: the cosine of the angle between the vector; that is, it is the dot product of the vectors divided by the product of their lengths.
+<br>
+![cosine_similarity](https://user-images.githubusercontent.com/40441643/220512310-0ec5a630-9acd-4494-8bb9-08cd51e22c5c.png)
+<br>
+<br>
+![cosine_similarity_2](https://user-images.githubusercontent.com/40441643/220513019-82c490c7-17e6-4fd5-aafc-18270814589e.png)
+```
+def similar_users(user_id, matrix, k=3):
+    user = matrix[matrix.index == user_id]
+    other_users = matrix[matrix.index != user_id]
+
+    similarities = cosine_similarity(user, other_users)[0].tolist()
+    indicies = other_users.index.tolist()
+
+    index_similarity = dict(zip(indicies, similarities))
+    index_similarity_sorted = sorted(index_similarity.items(), key = operator.itemgetter(1))
+    index_similarity_sorted.reverse()
+
+    top_users_similarities = index_similarity_sorted[:k]
+    users = [i[0] for i in top_users_similarities]
+
+    return users
+```
+```
+similar_users(1, rating)
+
+[131307, 130433, 102564]
+```
