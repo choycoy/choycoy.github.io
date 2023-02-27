@@ -4,7 +4,7 @@ tags:
   - Research
   - Collaborative Filtering
 ---
-💡 This post introduces the practice of Animation Recommendation Syste,.
+💡 This post introduces the practice of Animation Recommendation System.
 {: .notice--warning}
 ## User-Based Collaborative Filtering - Animation Recommendation System
 ### 1. Set up the libraries
@@ -174,24 +174,87 @@ rating_matrix = rating_matrix.fillna(0)
 <br>
 ![cosine_similarity_2](https://user-images.githubusercontent.com/40441643/220513019-82c490c7-17e6-4fd5-aafc-18270814589e.png)
 ```
-def similar_users(user_id, matrix, k=3):
-    user = matrix[matrix.index == user_id]
-    other_users = matrix[matrix.index != user_id]
+def similar_users(user_id, raitng_matrix, k=3):
 
+    # create a df of just the current user
+    user = rating_matrix[rating_matrix.index == user_id]
+
+    # and a df of all other users
+    other_users = rating_matrix[rating_matrix.index != user_id]
+
+    # calculate cosine similarity between user and each other user
     similarities = cosine_similarity(user, other_users)[0].tolist()
+
+    # create list of indices of these users
     indicies = other_users.index.tolist()
 
+    # create key/values pairs of user index and their similarity
     index_similarity = dict(zip(indicies, similarities))
+
+    # sort by similarity
     index_similarity_sorted = sorted(index_similarity.items(), key = operator.itemgetter(1))
     index_similarity_sorted.reverse()
 
+    # grab k users off the top
     top_users_similarities = index_similarity_sorted[:k]
     users = [i[0] for i in top_users_similarities]
 
     return users
-```
-```
-similar_users(1, rating)
 
-[131307, 130433, 102564]
 ```
+```
+similar_users(73515, rating_matrix)
+
+[25867, 25671, 28648]
+```
+
+### 6. Recommend the animations
+```
+def recommend_item(user_index, similar_user_indices, matrix, items=10):
+
+    # load vectors for similar users
+    similar_users = matrix[matrix.index.isin(similar_user_indices)]
+
+    # calculate average ratings across the 3 similar users
+    similar_users = similar_users.mean(axis=0)
+
+    # convert to dataframe so its easy to sort and filter
+    similar_users_df = pd.DataFrame(similar_users, columns=['mean'])
+
+    # load vector for the current user
+    user_df = matrix[matrix.index== user_index]
+
+    # transpose it so it is easier to filter
+    user_df_transposed = user_df.transpose()
+
+    # rename the column as 'rating'
+    user_df_transposed.columns = ['rating']
+
+    # remove any rows without a 0 value. Anime not watched yet
+    user_df_transposed = user_df_transposed[user_df_transposed['rating']==0]
+
+    # generate a list of animes the user has not seen
+    animes_unseen = user_df_transposed.index.tolist()
+
+    # filter average ratings of similar users for only anime the current user has not seen
+    similar_users_df_filtered = similar_users_df[similar_users_df.index.isin(animes_unseen)]
+
+    # order the dataframe
+    similar_users_df_ordered = similar_users_df_filtered.sort_values(by=['mean'], ascending=False)
+
+    # get the top 10 animes
+    top_n_anime = similar_users_df_ordered.head(items)
+    top_n_anime_indices = top_n_anime.index.tolist()
+
+    # look up these animes in the order dataframe to find names
+    anime_information = anime[anime['anime_id'].isin(top_n_anime_indices)]
+
+    return anime_information
+```
+
+```
+recommend_content = recommend_item(73515, similar_users(73515, rating_matrix), rating_matrix)
+```
+![recommend_1](https://user-images.githubusercontent.com/40441643/221506004-85ee83f1-23ad-4d08-8b30-0d79bbbaa84f.PNG)
+![recommend_2](https://user-images.githubusercontent.com/40441643/221505996-f457bdb1-8b01-4ae9-80e1-ad160150ab8d.PNG)
+![recommend_3](https://user-images.githubusercontent.com/40441643/221506002-2980806c-ec9c-45a9-be35-01223e3160ac.PNG)
