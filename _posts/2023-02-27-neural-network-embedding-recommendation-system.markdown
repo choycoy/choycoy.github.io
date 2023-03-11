@@ -150,7 +150,8 @@ index_book[22494]
 22494
 'Anna Karenina'
 ```
-- Exploring Wikilinks: Although it is not our main focus, we can do a little exploration. Let's find the number of unique Wikilinks and the most common ones. To create a single list from a list of lists, we can use the `itertools` chain method.
+<br>
+-Exploring Wikilinks: Although it is not our main focus, we can do a little exploration. Let's find the number of unique Wikilinks and the most common ones. To create a single list from a list of lists, we can use the `itertools` chain method.
 ```
 from itertools import chain
 wikilinks = list(chain(*[book[2] for book in books]))
@@ -159,6 +160,7 @@ print(f"There are {len(set(wikilinks))} unique wikilinks.")
 ```
 There are 311276 unique wikilinks.
 ```
+<br>
 How many of these are links to other books?
 ```
 wikilinks_other_books = [link for link in wikilinks if link in book_index.keys()]
@@ -167,4 +169,3 @@ print(f"There are {len(set(wikilinks_other_books))} unique wikilinks to other bo
 ```
 There are 17032 unique wikilinks to other books.
 ```
-## Most Linked_to Articles
