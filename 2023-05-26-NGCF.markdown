@@ -1,0 +1,46 @@
+---
+title: "Neural Graph Collaborative Filtering"
+tags:
+  - Paper Review
+  - Collaborative Filtering
+  - Recommendation
+  - High - order Connectivity
+  - Embedding Propagation
+  - Graph Neural Network
+
+---
+💡 This post reviews Neural Graph Collaborative Filtering, which combines Neural graph and Collaborative Filtering.
+{: .notice--warning}
+
+# Abstract
+Previous works: derive a user's (or an item's) embedding by transforming pre-existing characteristics that represent the user (or the item), such as ID and attributes.
+<br>
+<br>
+NGCF: previous works have a limitation to **capture the collaborative filtering effect** as the `collaborative signal` that is latent in user-item interactions is **not encoded** in the embedding process. Therefore, they suggest to aggregate the user-item interactions which is the `Bipartite Graph Structure` into the embedding step. They develop NGCF, which shows the `user-item graph structure` by **propagating embeddings** on it. In addition, by injecting the `collaborative signal` into the embedding steps in an `explicit manner`, they shows the modelling of `high-order connectivity` in user-item graph.
+
+# Introduction
+Two factors in learnable CF models
+<br>
+<br>
+1. embedding, which converts users and items into `vectorised representation`
+<br>
+<br>
+2. `interaction modelling`, which generates historical interactions based on the embeddings.
+<br>
+For example,
+<br>
+(1) matrix factorisation(MF) directly embeds user/item ID as an vector and models user-item interaction with `inner product`
+<br>
+<br>
+(2) collaborative deep learning extends the MF embedding function by integrating the **deep representations learnt** from rich `side information` of items.
+<br>
+<br>
+(3) neural collaborative filtering models replace the MF interaction function of inner product with `nonlinear neural networks`
+<br>
+(4) translation-based CF models instead use `Euclidean distance metric` as the interaction function.
+<br>
+<br>
+Although these methods have shown effectiveness, they argue that they are **not enough to produce satisfactory embeddings for collaborative filtering (CF)**. The main reason behind this is the embedding function's inability to explicitly capture the crucial `collaborative signal` present in user-item interactions, which **reveals the behavioural similarity between users (or items)**. To clarify further, most existing methods construct the embedding function using only descriptive features like ID and attributes, while disregarding the utilisation of user-item interactions, which are solely employed for defining the objective function during model training.
+<br>
+<br>
+Also, they solve the challenge by revealing the high-order connectivity from, user-item interactions, a natural way that encodes `collaborative signal` in the interaction graph structure.
