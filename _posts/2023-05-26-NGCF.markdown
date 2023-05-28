@@ -1,0 +1,172 @@
+---
+title: "Neural Graph Collaborative Filtering"
+tags:
+  - Paper Review
+  - Collaborative Filtering
+  - Recommendation
+  - High - order Connectivity
+  - Embedding Propagation
+  - Graph Neural Network
+---
+💡 This post reviews Neural Graph Collaborative Filtering, which combines Neural graph and Collaborative Filtering.
+{: .notice--warning}
+
+# Abstract
+Previous works: derive a user's (or an item's) embedding by transforming pre-existing characteristics that represent the user (or the item), such as ID and attributes.
+<br>
+<br>
+NGCF: previous works have a limitation to **capture the collaborative filtering effect** as the `collaborative signal` that is latent in user-item interactions is **not encoded** in the embedding process. Therefore, they suggest to aggregate the user-item interactions which is the `Bipartite Graph Structure` into the embedding step. They develop NGCF, which shows the `user-item graph structure` by **propagating embeddings** on it. In addition, by injecting the `collaborative signal` into the embedding steps in an `explicit manner`, they show the modelling of `high-order connectivity` in user-item graph.
+
+# 1. Introduction
+Two factors in learnable CF models
+<br>
+<br>
+(1) embedding, which converts users and items into `vectorised representation`
+<br>
+<br>
+(2) `interaction modelling`, which generates historical interactions based on the embeddings.
+<br>
+For example,
+<br>
+-matrix factorisation(MF) directly embeds user/item ID as an vector and models user-item interaction with `inner product`
+<br>
+<br>
+-collaborative deep learning extends the MF embedding function by integrating the **deep representations learnt** from rich `side information` of items.
+<br>
+<br>
+-neural collaborative filtering models replace the MF interaction function of inner product with `nonlinear neural networks`
+<br>
+-translation-based CF models instead use `Euclidean distance metric` as the interaction function.
+<br>
+<br>
+Although these methods have shown effectiveness, they argue that they are **not enough to produce satisfactory embeddings for collaborative filtering (CF)**. The main reason behind this is the embedding function's inability to explicitly capture the crucial `collaborative signal` present in user-item interactions, which **reveals the behavioural similarity between users (or items)**. To clarify further, most existing methods construct the embedding function using only descriptive features like ID and attributes, while disregarding the utilisation of user-item interactions, which are solely employed for defining the objective function during model training.
+<br>
+<br>
+Also, they solve the challenge by revealing the high-order connectivity from, user-item interactions, a natural way that encodes `collaborative signal` in the interaction graph structure.
+<br>
+<br>
+Figure 1: An illustration of the user-item interaction graph and the high-order connectivity. The node u1 is the target user to provide recommendations for.
+<br>
+![figure1](https://github.com/choycoy/choycoy.github.io/assets/40441643/a5b00686-480c-4194-9f1f-34362535bee3)
+<br>
+The right subfigure shows the tree structure that is expanded from u1. The high-order connectivity denotes the path that reaches u1 from any node with the path length l larger than 1. Such high-order connectivity includes rich semantics that bring collaborative signal.
+<br>
+<br>
+e.g. the path u1 <- i2 -< u2 indicates the `behaviour similarity` between u1 and u2 as both users have interacted with i2; the longer path u1 <- i2 -< u2 -<i4 suggests what `u1 is likely to adopt i4`, since her similar user u2 has consumed i4 before. Moreover, from the holistic view of l = 3, item i4 is more likely to be of interest to u1 than item i5, since there are two paths connecting <i5, u1> while only ne path connects <i5,u1>.
+<br>
+<br>
+They suggest to model the `high-order connectivity` information in the embedding function. Instead of **expanding the interaction graph as a tree** which is complex to implement, they design a `neural network` method to **propagate embeddings recursively on the graph**. Specifically, they devise an `embedding propagation layer`, which refines a user's(or an item's) embedding by **aggregating the embeddings of the interacted items (or users)**, they can enforce the embeddings to **capture the collaborative signal in high-order connectivities**.
+<br>
+<br>
+Taking Figure 1 as an example, stacking two layers captures the
+behaviour similarity of u1 ← i2 ← u2, stacking three layers captures
+the potential recommendations of u1 ← i2 ← u2 ← i4, and the
+strength of the information flow (which is estimated by the trainable
+weights between layers) determines the recommendation priority
+of i4 and i5.
+<br>
+<br>
+Although the high-order connectivity information ahs been considered in a very recent method named HOP-Rec
+, it is only exploited to enrich the training data. Specifically, the prediction model of HOP-Rec remains to be `MF`, while it is trained by optimising a `loss` that is augmented with high-order connectivities.
+
+# 2. Methodology
+## 2.1 Embedding Layer: initialisation of user embeddings and item embeddings
+Following mainstream recommender models [1, 14, 26], we describe a user u (an item i) with an embedding vector eu ∈ Rd(ei ∈ Rd), where d denotes the `embedding size`. This can be seen as building a parameter matrix as an embedding look-up table:
+<br>
+![equation1](https://github.com/choycoy/choycoy.github.io/assets/40441643/f5b0b3d2-7a15-41d0-88a5-687f4a3c1362)
+<br>
+<br>
+In traditional recommender models like MF and neural collaborative filtering, these `ID embeddings` are directly fed into an interaction layer (or operator) to achieve the prediction score. On the other hand, in their NGCF framework, they refine the embeddings **by propagating them** on the user-item interaction graph. This leads to more effective embeddings for recommendation, since the embedding refinement step **explicitly injects collaborative signal into embeddings**.
+
+## 2.2 Embedding Propagation Layers
+Next, they build upon the message-passing architecture of GNNS in order to capture CF signal along the graph structure and refine the embeddings of users ad items. They first illustrate the design of one-layer propagation, and then generalise it to multiple successive layers.
+
+### 2.2.1 First-order Propagation
+Intuitively, the `interacted items` provide evidence on a user's preference.; analogously, the users that consume an item can be treated as the `item features` and used to **measure the collaborative similarity of two items**. We build upon this basis to **perform embedding propagation between the connected users and items**, formulating the process with two major operations: `message construction` and `message aggregation`.
+<br>
+<br>
+**Message Construction**:For a connected user-item pair (u,i), we define the message from i to u as:
+mu←i = f (ei, eu,pui ),
+where `mu←i` is the `message embedding` (i.e., the information to be propagated). f (·) is the `message encoding` function, which takes embeddings ei and eu as input, and uses the `coefficient pui` to control the decay factor on each propagation on edge (u,i). In this work, they implement f (·) as:
+<br>
+![equation2](https://github.com/choycoy/choycoy.github.io/assets/40441643/02dfb5c8-3399-4ff4-8435-6b045f4e881d)
+<br>
+where W1, W2 ∈ Rd′×d are the `trainable weight matrices` to** distill useful information for propagation**. Distinct from conventional graph convolution networks, that consider the contribution of ei only, here they additionally encode the `interaction` between ei and eu into the message being passed via ei ⊙ eu , where ⊙ denotes the `element-wise product`. This makes the message **dependent on the affinity between ei and eu**. e.g., `passing more message from the similar items`. This not only increases the model representation ability, but also boosts the performance for recommendation.
+<br>
+<br>
+Following the graph convolutional network [18], we set pui as the `graph Laplacian norm` 1/root of(|Nu||Ni|), where Nu and Ni denote the `first-hop neighbours of user u and item i`. From the viewpoint of representation learning pui, reflects **how much the historical item contributes the user preference**. From the viewpoint of message passing, pui can be interpreted as a `discount factor`, considering the message being propagated should decay with the path length.
+<br>
+<br>
+**Message Aggregation**: In this stage, they aggregate the messages propagated from u's neighbourhood to refine u's representation. Specifically, they define the aggregation function as:
+<br>
+![equation3](https://github.com/choycoy/choycoy.github.io/assets/40441643/f888b1d4-cfcc-4aa3-bb9c-6697e46660e4)
+<br>
+where e(1)u denotes the representation of user u obtained after the first embedding propagation layer. The activation function of `LeakyReLU` allows **message to encode both positive and small negative signals**. Note that in addition to the messages propagated from neighbours Nu, we take the `self-connection` of u into consideration: `mu←u = W1eu`, which **retains the information of original features**. Analogously, they can obtain the representation e(1)i for item i by propagating information from its connected users. To summarise, the advantage of the embedding propagation layer lies in **explicitly exploiting the first-order connectivity** information to `relate user and item representation`.
+
+### 2.2.2 High-order Propagation
+With the representations augmented by first-order connectivity modelling, they can **stack more embedding propagation layers** to explore the high-order connectivity information. Such high-order connectivities are important to encode the collaborative signal to estimate the relevance score between a user and item.
+<br>
+![figure2](https://github.com/choycoy/choycoy.github.io/assets/40441643/52ee14e9-0453-4415-b93a-0484e5663b32)
+<br>
+By stacking l embedding propagation layers, a user(and an item) is capable of `receiving the messages` propagated from its `l-hop neighbours`. As Figure2 displays, in the `l-th step`, the representation of user u is recursively formulated as:
+<br>
+![equation4](https://github.com/choycoy/choycoy.github.io/assets/40441643/bcc2441e-c873-4b6b-ab3c-94aeeb01fd81)
+<br>
+wherein the messages being propagated are defined as follows,
+<br>
+![information](https://github.com/choycoy/choycoy.github.io/assets/40441643/73cdd14d-d41a-4284-a4f9-36e1c8af2ddf)
+<br>
+ e(l−1)i is the item representation generated from the `previous message-passing steps`, memorising the message from its(l-1) hop neighbours.  It further contributes to the representation of user u at layer l. Analogously, we can obtain the representation for item i at the layer l.
+
+## 2.3 Model Prediction
+After propagating with L layers, they obtain multiple representations
+for user u, namely {e(1)u , · · · , e(L)u }. Since the representations obtained in different layers emphasise the messages passed over different connections, they have different contributions in reflecting user preference. As such, they **concatenate them to constitute the final embedding for a user**; they do the same operations on items,
+concatenating the item representations {e(1)i, · · · , e(L)i} learnt by different layers to get the final item embedding:
+<br>
+![equation5](https://github.com/choycoy/choycoy.github.io/assets/40441643/7984e9bb-b57d-41ec-b592-c7622bd1e92b)
+<br>
+where ∥ is the concatenation operation. By doing so, they not only enrich the initial embedding with embedding propagation layers, but also allow controlling the range of propagation by adjusting L. Note that besides concatenation, other aggregators can also be applied, such as weighted average, max pooling, LSTM, which imply different assumptions in combining the connectivities of different orders.
+<br>
+<br>
+Finally, they generate the `inner product` to estimate the `user's preference towards the target item`:
+<br>
+![equation6](https://github.com/choycoy/choycoy.github.io/assets/40441643/933e093f-f88d-4ff4-9062-040ef96248d4)
+<br>
+In this work, **they emphasize the embedding function learning thus only employ the simple interaction function of inner product**.
+
+### 2.4 Optimisation
+To learn model parameters, they optimise the pairwise `BPR loss`. It considers the relative order between observed and unobserved user-item interactions. Specifically, BPR assumes that the observed interactions, which are more reflective of a user's preference, should be assigned **higher prediction values** than unobserved ones.
+
+#### Other Baselines
+`MF`: This is matrix factorization optimised by the Bayesian
+personalized ranking (BPR) loss, which exploits the user-item
+direct interactions only as the target value of interaction function
+<br>
+<br>
+`CMN`: It is a state-of-the-art **memory-based model**, where
+the user representation attentively combines the memory slots
+of neighbouring users via the memory layers. Note that the first-order connections are used to find similar users who interacted
+with the same items
+<br>
+<br>
+`NeuMF`: The method is a state-of-the-art **neural CF model**
+which uses `multiple hidden layers` above the element-wise and
+concatenation of user and item embeddings to capture their non-linear feature interactions. Especially, they employ two-layered
+plain architecture, where the dimension of each hidden layer
+keeps the same
+<br>
+<br>
+`HOP-Rec`: This is a state-of-the-art graph-based model,
+where the high-order neighbours derived from `random walks`
+are exploited to enrich the user-item interaction data.
+<br>
+<br>
+`GC-MC`: This model adopts **GCN encoder** to generate
+the representations for users and items, where `only the first-order
+neighbours are considered`. Hence one graph convolution layer,
+where the hidden dimension is set as the embedding size.
+<br>
+<br>
+`PinSage`: PinSage is designed to employ **GraphSAGE**
+on item-item graph. In this work, we apply it on user-item interaction graph. Especially, they employ two graph convolution layers as suggested, and the hidden dimension is set equal
+to the embedding size.
