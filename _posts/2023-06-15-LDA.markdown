@@ -1,0 +1,53 @@
+---
+title: "LDA(Latent Dirichlet Allocation)"
+tags:
+  - Topic Modelling
+---
+
+💡 This post introduces LDA(Latent Dirichlet Allocation).
+{: .notice--warning}
+
+Topic Modelling이란 문서의 집합에서 topic을 찾아내는 과정이다.
+<br>
+LDA는 주어진 문서에서 어떤 주제들이 존재하는지를 확률적으로 모델링하는 토픽 모델링 기법들 중 하나이다.
+<br>
+<br>
+# 1. Load dataset 데이터셋 불러오기
+e.g.
+```
+columns_name=['user_id','stars', 'item_id', 'text']
+df = pd.read_csv("/content/drive/My Drive/final/example_texts_10000.csv", sep=",", names=columns_name, encoding='latin-1')
+```
+<br>
+![df](https://github.com/choycoy/choycoy.github.io/assets/40441643/83d9c1f8-e1af-4ad9-a3ca-ac611b790d5b)
+<br>
+# 2. Preprocess data 데이터 전처리하기
+## 1. text tokenisation 텍스트 토큰화하기
+```
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+import string
+
+nltk.download('stopwords')
+nltk.download('wordnet')
+
+# Define the preprocessing function
+def preprocess_text(text):
+    # Tokenize the text
+    tokens = text.lower().split()
+```
+## 2. Remove stopwords 불용어 제거하기
+```
+stop_words = set(stopwords.words('english'))
+tokens = [token for token in tokens if token not in stop_words]
+```
+## 3. Remove punctuations 구두점 제거하기
+```
+tokens = [token.translate(str.maketrans('', '', string.punctuation)) for token in tokens]
+```
+## 4. Lemmatise the tokens 토큰 표제어 추출하기
+```
+lemmatizer = WordNetLemmatizer()
+tokens = [lemmatizer.lemmatize(token) for token in tokens]
+```
